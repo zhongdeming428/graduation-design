@@ -10,3 +10,4 @@
 
 * urllib.request
 * pyquery
+* xlrd
