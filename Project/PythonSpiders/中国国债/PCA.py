@@ -25,6 +25,17 @@ def calculateContribRate(eigenVals):
         rates = rates + rate
     return rates
 
+# 二维矩阵写入到CSV文本的函数。
+def D2Matrix2CSV(matrix, path):
+    string = ''
+    for ma in matrix.tolist():
+        for m in ma:
+            string = string + str(m) + ','
+        string = string[0:-1] + '\n'
+    file = open(path, 'w')
+    file.write(string)
+    file.close()
+
 # 处理矩阵，做PCA处理。
 def PCA(matrix, count):
     # 求每一列的均值，即每个维度的均值。
@@ -46,20 +57,22 @@ def PCA(matrix, count):
     # newEigenVectors即为各指标对应系数。
     print('各指标对应系数：')
     print(newEigenVectors)
+    D2Matrix2CSV(newEigenVectors, './Project/PythonSpiders/中国国债/中国国债历年信息汇总/各项指标对应系数.csv')
     lowDDataMat = meanRemoved * newEigenVectors
     return lowDDataMat
 
-# print(PCA(readCSV('./Project/PythonSpiders/中国国债/中国国债历年信息汇总/国债数据.csv'), 3))
+print(PCA(readCSV('./Project/PythonSpiders/中国国债/中国国债历年信息汇总/国债数据.csv'), 3))
 
 # import numpy as np
-from matplotlib.mlab import PCA
+# from matplotlib.mlab import PCA
 
-data = np.array(readCSV('./Project/PythonSpiders/中国国债/中国国债历年信息汇总/国债数据.csv'))
-results = PCA(data)
-print(results.Wt)
-print(results.Y)
-print(results.a)
-print(results.fracs)
-print(results.mu)
-print(results.s)
-print(results.sigma)
+# 以下是使用matplotlib模块实现PCA，但是还不清楚返回值具体的属性，没有接口文档可供参考。
+# data = np.array(readCSV('./Project/PythonSpiders/中国国债/中国国债历年信息汇总/国债数据.csv'))
+# results = PCA(data)
+# print(results.Wt)
+# print(results.Y)
+# print(results.a)
+# print(results.fracs)
+# print(results.mu)
+# print(results.s)
+# print(results.sigma)
