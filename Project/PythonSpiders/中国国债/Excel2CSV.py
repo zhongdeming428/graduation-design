@@ -10,25 +10,28 @@ def getFileNames(path):
     filelist = os.listdir(path)  
 
     for filename in filelist:  
-        filepath = os.path.join(path, filename)  
+        # filepath = os.path.join(path, filename)  
+        filepath = path + '/' + filename
         filenames.append(filepath) 
     return filenames 
 
 def readXLSX(path):
     data = xlrd.open_workbook(path)
     table = data.sheets()[0]
-    csv = []
     count = 0
+    string = ''
     for i in range(table.nrows):
-        if(count == 0):
-            new_row = []
         row = table.row_values(i)
         if(row[2] in dimensions):
-            new_row.append(row[3])
+            string = string + str(row[3]) + ','
             count = count + 1
         if(count >= 14):
             count = 0
-            csv.append(new_row)
-    print(csv)
+            string = string[0:-1] + '\n'
+    file = open('./Project/PythonSpiders/中国国债/中国国债历年信息汇总/国债数据.csv', 'a')
+    file.write(string)
+    file.close()
 
-readXLSX('./Project/PythonSpiders/中国国债/中国国债历年信息/2002年中债国债收益率曲线标准期限信息.xlsx')
+fileNames = getFileNames('./Project/PythonSpiders/中国国债/中国国债历年信息')
+for file in fileNames:
+    readXLSX(file)
