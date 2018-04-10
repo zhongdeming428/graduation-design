@@ -30,7 +30,7 @@ def downloadXlsxs(urls, host):
         download_url = host + query('.zw_malei3 a')[0].attrib['href']
         file_name = query('.zw_malei3 a')[0].attrib['title']
         download_content = urllib.request.urlopen(download_url)
-        file = open('./Project/PythonSpiders/中国国债/中国国债历年信息/' + file_name, 'wb')
+        file = open('./Project/PCA研究国债/中国国债/中国国债历年信息/' + file_name, 'wb')
         file.write(download_content.read())
         file.close()
 
