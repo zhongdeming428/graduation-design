@@ -3,7 +3,9 @@
 import numpy as np
 
 ChinaBond = './Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv'
-AmericanBond = './Project/PCA研究国债/美国国债/美国国债历年信息汇总/国债数据.csv'
+AmericaBond = './Project/PCA研究国债/美国国债/美国国债历年信息汇总/国债数据 - FoPython.csv'
+CSVChina = './Project/PCA研究国债/中国国债/中国国债历年信息汇总/各项指标对应系数.csv'
+CSVAmerica = './Project/PCA研究国债/美国国债/美国国债历年信息汇总/各项指标对应系数.csv'
 
 # 读取.csv文件的函数，返回一个numpy矩阵。
 def readCSV(path):
@@ -41,7 +43,7 @@ def D2Matrix2CSV(matrix, path):
     file.close()
 
 # 处理矩阵，做PCA处理。
-def PCA(matrix, count):
+def PCA(matrix, count, csvPath):
     # 求每一列的均值，即每个维度的均值。
     meanVals = np.mean(matrix, axis=0)
     # 每一项都减去均值。
@@ -61,7 +63,7 @@ def PCA(matrix, count):
     # newEigenVectors即为各指标对应系数。
     print('各指标对应系数：')
     print(newEigenVectors)
-    D2Matrix2CSV(newEigenVectors, './Project/PCA研究国债/中国国债/中国国债历年信息汇总/各项指标对应系数.csv')
+    # D2Matrix2CSV(newEigenVectors, csvPath)
     lowDDataMat = meanRemoved * newEigenVectors
     return lowDDataMat
 
@@ -80,4 +82,4 @@ def PCA(matrix, count):
 # print(results.sigma)
 
 
-print(PCA(readCSV(AmericanBond), 3))
+print(PCA(readCSV(AmericaBond), 3, CSVAmerica))
