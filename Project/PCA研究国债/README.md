@@ -1,4 +1,4 @@
-# Python爬虫
+# PCA研究国债
 
 这个文件夹用于存放我所开发的用于爬取收益率曲线的Python爬虫.
 
@@ -32,7 +32,11 @@
 
 [美国财政部官网](https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yieldYear&year=2015)
 
+### 其他
+
+依赖包以及各程序作用参考中国国债研究。
+
 ## 下一步
 
-* 研究其他python实现PCA的方法，主要是matplotlib中的PCA方法
-* 研究提取出主因子后的下一步。
+* 完成LIBOR研究
+* 总结PCA分析，并开始由分析结果向价值预测过渡
