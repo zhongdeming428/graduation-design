@@ -46,6 +46,15 @@ h = range(1,51,1)
 rateTable = pd.DataFrame.from_items([('Period', h),('NS', j)])
 print(rateTable.to_string())
 
+sum = 0
+y1 = [3.2013,3.3682,3.5205,3.6916,3.7062,3.9689,4.0079,4.1207]
+for i,v in enumerate([1,3,5,7,10,15,20,30]):
+    res = j[i+1]
+    sum = sum + (res - y1[i])**2
+mean = sum / len(x)
+error = sqrt(mean)
+print('RMSE:', str(mean))
+
 # xx = array([1,2,5,10,25,30])
 # 图表展示。
 xx = array([1,3,5,7,10,15,20,30,40,50])
@@ -53,3 +62,4 @@ pylab.plot(x, y, 'ro')
 pylab.plot(xx, fp(p,xx), 'b')
 pylab.title('Nelson-Siegel')
 pylab.show()
+
