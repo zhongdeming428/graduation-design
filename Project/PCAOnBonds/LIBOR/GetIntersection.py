@@ -11,7 +11,7 @@ def readXLSX(path):
         cols.append(col)
     return cols
 
-# cols = readXLSX('./Project/PCA研究国债/LIBOR/LIBOR历年信息汇总/LIBOR日期数据.xlsx')
+# cols = readXLSX('./Project/PCAOnBonds/LIBOR/LIBOR历年信息汇总/LIBOR日期数据.xlsx')
 
 # 求list中所有list交集的函数，返回交集list。
 def getIntersection(cols):
@@ -29,11 +29,11 @@ def list2CSV(list):
     string = ''
     for item in list:
         string = string + str(item) + '\n'
-    file = open('./Project/PCA研究国债/LIBOR/LIBOR历年信息汇总/共有日期.csv', 'w')
+    file = open('./Project/PCAOnBonds/LIBOR/LIBOR历年信息汇总/共有日期.csv', 'w')
     file.write(string)
     file.close()
 
 
 # print(getIntersection([[1,2,3], [1,3], [1,2,3,4,5]]))
-result = getIntersection(readXLSX('./Project/PCA研究国债/LIBOR/LIBOR历年信息汇总/LIBOR日期数据.xlsx'))
+result = getIntersection(readXLSX('./Project/PCAOnBonds/LIBOR/LIBOR历年信息汇总/LIBOR日期数据.xlsx'))
 list2CSV(result)

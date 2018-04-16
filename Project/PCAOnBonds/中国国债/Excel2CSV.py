@@ -28,10 +28,10 @@ def readXLSX(path):
         if(count >= 14):
             count = 0
             string = string[0:-1] + '\n'
-    file = open('./Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv', 'a')
+    file = open('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv', 'a')
     file.write(string)
     file.close()
 
-fileNames = getFileNames('./Project/PCA研究国债/中国国债/中国国债历年信息')
+fileNames = getFileNames('./Project/PCAOnBonds/中国国债/中国国债历年信息')
 for file in fileNames:
     readXLSX(file)

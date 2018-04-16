@@ -2,10 +2,10 @@
 
 import numpy as np
 
-ChinaBond = './Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv'
-AmericaBond = './Project/PCA研究国债/美国国债/美国国债历年信息汇总/国债数据 - FoPython.csv'
-CSVChina = './Project/PCA研究国债/中国国债/中国国债历年信息汇总/各项指标对应系数.csv'
-CSVAmerica = './Project/PCA研究国债/美国国债/美国国债历年信息汇总/各项指标对应系数.csv'
+ChinaBond = './Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv'
+AmericaBond = './Project/PCAOnBonds/美国国债/美国国债历年信息汇总/国债数据 - FoPython.csv'
+CSVChina = './Project/PCAOnBonds/中国国债/中国国债历年信息汇总/各项指标对应系数.csv'
+CSVAmerica = './Project/PCAOnBonds/美国国债/美国国债历年信息汇总/各项指标对应系数.csv'
 
 # 读取.csv文件的函数，返回一个numpy矩阵。
 def readCSV(path):
@@ -13,7 +13,7 @@ def readCSV(path):
     matrix = np.matrix(data)
     return matrix
 
-# readCSV('./Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv')
+# readCSV('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv')
 
 # 计算贡献率的函数。
 def calculateContribRate(eigenVals):  
@@ -60,7 +60,6 @@ def PCA(matrix, count, csvPath):
     # 按照特征值重新选取特征向量。
     newEigenVectors = eigenVectors[:, eigenValsIndex]
     # lowDDataMat即为降维后的矩阵（已经归一化）。
-    # newEigenVectors即为各指标对应系数。
     print('各指标对应系数：')
     print(newEigenVectors)
     # D2Matrix2CSV(newEigenVectors, csvPath)
@@ -71,7 +70,7 @@ def PCA(matrix, count, csvPath):
 # from matplotlib.mlab import PCA
 
 # 以下是使用matplotlib模块实现PCA，但是还不清楚返回值具体的属性，没有接口文档可供参考。
-# data = np.array(readCSV('./Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv'))
+# data = np.array(readCSV('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv'))
 # results = PCA(data)
 # print(results.Wt)
 # print(results.Y)

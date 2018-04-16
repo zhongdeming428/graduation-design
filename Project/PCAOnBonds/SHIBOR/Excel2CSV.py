@@ -30,10 +30,10 @@ def readXLSX(path):
             if(count >= 8):
                 count = 0
                 string = string[0:-1] + '\n'
-    file = open('./Project/PCA研究国债/SHIBOR/SHIBOR历年信息汇总/SHIBOR数据.csv', 'a')
+    file = open('./Project/PCAOnBonds/SHIBOR/SHIBOR历年信息汇总/SHIBOR数据.csv', 'a')
     file.write(string)
     file.close()
 
-fileNames = getFileNames('./Project/PCA研究国债/SHIBOR/SHIBOR历年信息')
+fileNames = getFileNames('./Project/PCAOnBonds/SHIBOR/SHIBOR历年信息')
 for file in fileNames:
     readXLSX(file)

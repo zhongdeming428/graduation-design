@@ -17,8 +17,8 @@ matrix2 = [[0.210225954, -0.279697205, -0.843553391],
             [0.170267607, 0.432269305, -0.210722497],
             [0.18743752, 0.305348103, 0.072263159]]
 matrix2 = np.matrix(matrix2)
-sourceData = np.genfromtxt('./Project/PCA研究国债/中国国债/中国国债历年信息汇总/国债数据.csv',delimiter=',',skip_header=False)
+sourceData = np.genfromtxt('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv',delimiter=',',skip_header=False)
 sourceData = np.matrix(sourceData)
 processedData = sourceData * matrix2
-np.savetxt('./Project/PCA研究国债/中国国债/中国国债历年信息汇总/降维后数据.csv', processedData.tolist(), delimiter = ',')
+np.savetxt('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/降维后数据.csv', processedData.tolist(), delimiter = ',')
 print(processedData.tolist())
