@@ -33,10 +33,10 @@ def VaR(Returns, Formula = 'Parametric Normal', Confidence_Interval = 0.95 , Per
     #===============================
     if Formula == 'Parametric Normal':
         
-        if Series == False: 
+        if Series == False:
             Data = Returns[-Period_Interval:]
             stdev = np.std(Data)
-            Value_at_Risk = stdev*norm.ppf((Confidence_Interval + 1)/2)
+            Value_at_Risk = stdev*norm.ppf(Confidence_Interval)
         if Series == True:
             Value_at_Risk = pd.Series(index=Returns.index, name = 'ParVaR')
             for i in range(0,len(Returns)-Period_Interval):
