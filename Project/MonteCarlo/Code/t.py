@@ -19,5 +19,3 @@ from scipy.stats import norm
 data = norm.rvs(0.09, 0.04, 10000)
 var = np.abs(norm.ppf(0.05)) * np.std(data)
 print(var)
-# print(np.mean(data))
-# print(np.std(data))
