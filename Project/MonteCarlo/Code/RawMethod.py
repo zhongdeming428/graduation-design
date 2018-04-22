@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# GitHub上找到的源码，进行了修改，用做参考。
 
 from scipy.stats import norm
 import numpy as np
