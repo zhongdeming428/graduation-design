@@ -15,4 +15,6 @@ SHIBOR:
 DetailData:
 	Keys: 
 	DataType:
+
+具体还是看MongoDB中的表结构好了，懒得写了。
 		

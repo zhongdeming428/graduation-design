@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# 用于更新数据库中企债详细数据的python脚本。
 
 import urllib.request
 from pyquery import PyQuery as pq
