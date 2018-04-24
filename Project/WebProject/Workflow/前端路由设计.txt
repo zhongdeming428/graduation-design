@@ -12,3 +12,4 @@
 	“/VaR/Calculation/”：根据上传数据计算在险价值页面。
 （5）“/ValuationData/”：中债估值数据界面。
 （6）“/Search/”：债券数据查询页面。
+（7）“/CurveFit/”：收益率曲线拟合页面。
