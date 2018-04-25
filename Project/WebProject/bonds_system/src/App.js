@@ -10,48 +10,35 @@ class App extends Component {
     return (
 		<Layout className="App">
 			<Header className="header">
-				<div className="logo" />
-				<Menu
-					theme="dark"
-					mode="horizontal"
-					style={{ lineHeight: '64px' }}
-				>
-				</Menu>
+				<h1 style={{color:'white'}}><i>Bonds Data Analysis System</i></h1>
 			</Header>
-			<Layout className="Content">
-				<Sider width={200} style={{ background: '#fff' }}>
+			<Layout className="App_Content">
+				<Sider width={200} style={{ background: '#fff',height:'568' }}>
 					<Menu
 						mode="inline"
 						defaultSelectedKeys={['1']}
-						defaultOpenKeys={['sub1']}
 						style={{ height: '100%', borderRight: 0 }}
 					>
-						<SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
-							<Menu.Item key="1">option1</Menu.Item>
-							<Menu.Item key="2">option2</Menu.Item>
-							<Menu.Item key="3">option3</Menu.Item>
-							<Menu.Item key="4">option4</Menu.Item>
+						<Menu.Item key="1"><Icon type="notification" />新闻公告</Menu.Item>
+						<SubMenu key="sub1" title={<span><Icon type="area-chart" />收益率曲线数据</span>}>
+							<Menu.Item key="2">中国国债历年信息</Menu.Item>
+							<Menu.Item key="3">美国国债历年信息</Menu.Item>
+							<Menu.Item key="4">SHIBOR历年信息</Menu.Item>
+							<Menu.Item key="5">LIBOR历年信息</Menu.Item>
+							<Menu.Item key="6">沪企债历年信息</Menu.Item>
+							<Menu.Item key="7">深企债历年信息</Menu.Item>
 						</SubMenu>
-						<SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
-							<Menu.Item key="5">option5</Menu.Item>
-							<Menu.Item key="6">option6</Menu.Item>
-							<Menu.Item key="7">option7</Menu.Item>
-							<Menu.Item key="8">option8</Menu.Item>
+						<Menu.Item key="8"><Icon type="pie-chart" />PCA主成分分析</Menu.Item>
+						<SubMenu key="sub2" title={<span><Icon type="pay-circle" />VaR在险价值</span>}>
+							<Menu.Item key="9">中债VaR</Menu.Item>
+							<Menu.Item key="10">VaR计算器</Menu.Item>
 						</SubMenu>
-						<SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
-							<Menu.Item key="9">option9</Menu.Item>
-							<Menu.Item key="10">option10</Menu.Item>
-							<Menu.Item key="11">option11</Menu.Item>
-							<Menu.Item key="12">option12</Menu.Item>
-						</SubMenu>
+						<Menu.Item key="11"><Icon type="solution" />中债估值数据</Menu.Item>
+						<Menu.Item key="12"><Icon type="search" />数据查询</Menu.Item>
+						<Menu.Item key="13"><Icon type="line-chart" />收益率曲线拟合</Menu.Item>
 					</Menu>
 				</Sider>
-				<Layout style={{ padding: '0 24px 24px' }}>
-					<Breadcrumb style={{ margin: '16px 0' }}>
-						<Breadcrumb.Item>Home</Breadcrumb.Item>
-						<Breadcrumb.Item>List</Breadcrumb.Item>
-						<Breadcrumb.Item>App</Breadcrumb.Item>
-					</Breadcrumb>
+				<Layout style={{ padding: '24px' }}>
 					<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
 						Content
           			</Content>

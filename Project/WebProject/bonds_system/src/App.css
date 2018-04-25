@@ -1,8 +1,12 @@
 .App {
-  	text-align: center;
-  	height: 800px;
+  	min-height: 638px;
   	display: block
 }
-.Content {
-	min-height: 600px;
+.App_Content {
+	min-height: 568px;
+
+}
+.header {
+	height: 70px;
+	background-color: #06c
 }
