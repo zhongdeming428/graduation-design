@@ -4,9 +4,11 @@
 }
 .App_Content {
 	min-height: 568px;
-
 }
 .header {
 	height: 70px;
 	background-color: #06c
+}
+.ant-layout-sider-trigger {
+	background: #06c
 }

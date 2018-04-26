@@ -44,31 +44,31 @@ class LeftMenu extends Component {
                 >
                     <Menu.Item key="1">
                         <Link to='/'><Icon type="notification" />
-                        新闻公告</Link>
+                        <span>新闻公告</span></Link>
                     </Menu.Item>
-                    <SubMenu key="sub1" title={<span><Icon type="area-chart" />收益率曲线数据</span>}>
-                        <Menu.Item key="2"><Link to='/BondsData/ChinaBonds'>中国国债历年信息</Link></Menu.Item>
-                        <Menu.Item key="3"><Link to='/BondsData/AmericaBonds'>美国国债历年信息</Link></Menu.Item>
-                        <Menu.Item key="4"><Link to='/BondsData/SHIBOR'>SHIBOR历年信息</Link></Menu.Item>
-                        <Menu.Item key="5"><Link to='/BondsData/LIBOR'>LIBOR历年信息</Link></Menu.Item>
-                        <Menu.Item key="6"><Link to='/BondsData/SHBonds'>沪企债历年信息</Link></Menu.Item>
-                        <Menu.Item key="7"><Link to='/BondsData/SZBonds'>深企债历年信息</Link></Menu.Item>
+                    <SubMenu key="sub1" title={<span><Icon type="area-chart" /><span>收益率曲线数据</span></span>}>
+                        <Menu.Item key="2"><Link to='/BondsData/ChinaBonds'><span>中国国债历年信息</span></Link></Menu.Item>
+                        <Menu.Item key="3"><Link to='/BondsData/AmericaBonds'><span>美国国债历年信息</span></Link></Menu.Item>
+                        <Menu.Item key="4"><Link to='/BondsData/SHIBOR'><span>SHIBOR历年信息</span></Link></Menu.Item>
+                        <Menu.Item key="5"><Link to='/BondsData/LIBOR'><span>LIBOR历年信息</span></Link></Menu.Item>
+                        <Menu.Item key="6"><Link to='/BondsData/SHBonds'><span>沪企债历年信息</span></Link></Menu.Item>
+                        <Menu.Item key="7"><Link to='/BondsData/SZBonds'><span>深企债历年信息</span></Link></Menu.Item>
                     </SubMenu>
                     <Menu.Item key="8">
-                        <Link to='/PCA'><Icon type="pie-chart" />PCA主成分分析</Link>
+                        <Link to='/PCA'><Icon type="pie-chart" /><span>PCA主成分分析</span></Link>
                     </Menu.Item>
-                    <SubMenu key="sub2" title={<span><Icon type="pay-circle" />VaR在险价值</span>}>
-                        <Menu.Item key="9"><Link to='/VaRData'>中债VaR</Link></Menu.Item>
-                        <Menu.Item key="10"><Link to='/VaRCalculator'>VaR计算器</Link></Menu.Item>
+                    <SubMenu key="sub2" title={<span><Icon type="pay-circle" /><span>VaR在险价值</span></span>}>
+                        <Menu.Item key="9"><Link to='/VaRData'><span>中债VaR</span></Link></Menu.Item>
+                        <Menu.Item key="10"><Link to='/VaRCalculator'><span>VaR计算器</span></Link></Menu.Item>
                     </SubMenu>
                     <Menu.Item key="11">
-                        <Link to='/ValuationData'><Icon type="solution" />中债估值数据</Link>
+                        <Link to='/ValuationData'><Icon type="solution" /><span>中债估值数据</span></Link>
                     </Menu.Item>
                     <Menu.Item key="12">
-                        <Link to='/Search'><Icon type="search" />数据查询</Link>
+                        <Link to='/Search'><Icon type="search" /><span>数据查询</span></Link>
                     </Menu.Item>
                     <Menu.Item key="13">
-                        <Link to='/CurveFit'><Icon type="line-chart" />收益率曲线拟合</Link>
+                        <Link to='/CurveFit'><Icon type="line-chart" /><span>收益率曲线拟合</span></Link>
                     </Menu.Item>
                 </Menu>
     }

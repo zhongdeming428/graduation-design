@@ -1,49 +1,193 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Select, Spin } from 'antd';
+import axios from 'axios';
+const Option = Select.Option;
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  render: text => <a href="javascript:;">{text}</a>,
+
+let columns = [{
+	title: 'Date',
+	dataIndex: 'Date'
 }, {
-  title: 'Age',
-  dataIndex: 'age',
+	title: '0d',
+	dataIndex: 'T0d',
 }, {
-  title: 'Address',
-  dataIndex: 'address',
-}];
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
+	title: '1m',
+	dataIndex: 'T1m',
 }, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
+	title: '2m',
+	dataIndex: 'T2m',
 }, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
+	title: '3m',
+	dataIndex: 'T3m',
 }, {
-  key: '4',
-  name: 'Disabled User',
-  age: 99,
-  address: 'Sidney No. 1 Lake Park',
+	title: '6m',
+	dataIndex: 'T6m',
+}, {
+	title: '9m',
+	dataIndex: 'T9m',
+}, {
+	title: '1y',
+	dataIndex: 'T1y',
+}, {
+	title: '2y',
+	dataIndex: 'T2y',
+}, {
+	title: '3y',
+	dataIndex: 'T3y',
+}, {
+	title: '5y',
+	dataIndex: 'T5y',
+}, {
+	title: '6y',
+	dataIndex: 'T6y',
+}, {
+	title: '7y',
+	dataIndex: 'T7y',
+}, {
+	title: '8y',
+	dataIndex: 'T8y',
+}, {
+	title: '9y',
+	dataIndex: 'T9y',
+}, {
+	title: '10y',
+	dataIndex: 'T10y',
 }];
 
+const handleChange = function(value) {
+	this.setState({loading: true});
+	axios({
+		method: 'post',
+		url: '/BondsData',
+		dataType: 'json',
+		data: {
+			type: 1,
+			year: String(value)
+		}
+	}).then(res => {
+			var data = res.data;
+			var colNames = Object.keys(data.data[0]);
+			var index = colNames.indexOf('_id');
+			colNames.splice(index, 1);
+			var newColumns = colNames.map(name => {
+				if(name == 'Date')
+					return {
+						title: name,
+						dataIndex: name,
+						key: name
+					}
+				else
+					return {
+						title: name.substring(1),
+						dataIndex: name,
+						key: name
+					};
+			});
+			data.data.forEach(d => {
+				d.key = d._id;
+				colNames.forEach(name => {
+					if(name != 'Date') {
+						var num = Number(d[name]);
+						if(num == num)
+							d[name] = num.toFixed(2);
+					}
+				});
+			});
+			this.setState({
+				years: data.dates,
+				data: data.data,
+				loading: false,
+				columns: newColumns
+			});
+		}, err => {
+			this.setState({
+				loading: false
+			});
+			alert(err);
+		});
+}
 
 class ChinaBonds extends React.Component {
-  render() {
-    return <div>
-      <div>
-        
-      </div>
-      <Table columns={columns} dataSource={data} />
-    </div>
-  }
+	constructor() {
+		super();
+		this.state = {
+			years: [],
+			data: [],
+			loading: true,
+			columns
+		};
+		this.handleChange = handleChange.bind(this);
+	}
+	componentDidMount() {
+		axios({
+			url: '/BondsData',
+			method:'post',
+			data: {
+				type: 1,
+				year: 2018
+			},
+			dataType: 'json'
+		}).then(res => {
+			var data = res.data;
+			var colNames = Object.keys(data.data[0]);
+			var index = colNames.indexOf('_id');
+			colNames.splice(index, 1);
+			var newColumns = colNames.map(name => {
+				if(name == 'Date')
+					return {
+						title: name,
+						dataIndex: name,
+						key: name
+					}
+				else
+					return {
+						title: name.substring(1),
+						dataIndex: name,
+						key: name
+					};
+			});
+			data.data.forEach(d => {
+				d.key = d._id;
+				colNames.forEach(name => {
+					if(name != 'Date') {
+						var num = Number(d[name]);
+						if(num == num)
+							d[name] = num.toFixed(2);
+					}
+				});
+			});
+			this.setState({
+				years: data.dates,
+				data: data.data,
+				loading: false,
+				columns: newColumns
+			});
+		}, err => {
+			this.setState({
+				loading: false
+			});
+			alert(err);
+		});
+	}
+	render() {
+		return <div>
+			<div style={{margin:'0px 0px 10px 0px'}}>
+				<Select defaultValue='2018'  style={{ width: 120 }} onChange={this.handleChange}>
+					{
+						this.state.years.map(year => {
+							return <Option key={year} value={year}>{year}</Option>
+						})
+					}
+				</Select>
+			</div>
+			{
+				!this.state.loading ? <Table columns={this.state.columns} dataSource={this.state.data} /> : null
+			}
+			{ 
+				this.state.loading ? <Spin size="large" style={{ zIndex:'10000', position:'relative', display:'block', left:'50%',top:'50%', transform:'translate(-50%, -50%)'}}/> : null 
+			}
+		</div>
+	}
 }
 
 export default ChinaBonds
