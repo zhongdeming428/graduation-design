@@ -35,18 +35,32 @@ var getBondsData = function(url, type, year, res) {
                 if(err)
                     res.status(500).send(err);
                 year = result[0].Date.substring(0, result[0].Date.indexOf('/'));
-                collection.find({'Date': new RegExp(year + '/.+')}).sort({'Date':-1}).toArray(function(err, result) {
+                collection.find({$or:[{'Date': new RegExp(year + '\\/.+')}, {'Date': new RegExp('^\\d\\d\\/\\d\\d\\/'+String(year).substring(2)+'$')}]}).sort({'Date':-1}).toArray(function(err, result) {
                     if(err)
-                        res.status(500).send(err);
+                    res.status(500).send(err);
                     var data = {};
+                    result.forEach(r => {
+                        r.Date = r.Date.replace(/\-/g, '/');
+                        if(/^\d\d\/\d\d\/\d\d$/.test(String(r.Date))) {
+                            r.Date = '20' + r.Date.substring(r.Date.lastIndexOf('/') + 1) + '/' + r.Date.substring(0, 5);
+                        }
+                    });
                     data.data = result;
                     collection.distinct('Date').then(dates => {
                         var datesRes = [];
                         dates.forEach(date => {
-                            date = date.replace('-', '/');
-                            var temp = date.substring(0, date.indexOf('/'));
+                            var temp;
+                            date = date.replace(/\-/g, '/');
+                            if(/^\d\d\/\d\d\/\d\d$/.test(String(date))) {
+                                temp = '20' + date.substring(date.lastIndexOf('/') + 1);
+                            }
+                            else 
+                                temp = date.substring(0, date.indexOf('/'));
                             if(datesRes.indexOf(temp) < 0)
                                 datesRes.push(temp);
+                        });
+                        datesRes.sort((a, b) => {
+                            return a - b;
                         });
                         data.dates = datesRes;
                         res.send(data);
@@ -58,18 +72,32 @@ var getBondsData = function(url, type, year, res) {
             });
         }
         else {
-            collection.find({'Date':new RegExp(year + '.+')}).sort({'Date': -1}).toArray(function(err, result) {
+            collection.find({$or:[{'Date': new RegExp(year + '[\\/-].+')}, {'Date': new RegExp('^\\d\\d[\\/-]\\d\\d[\\/-]'+String(year).substring(2)+'$')}]}).sort({'Date': -1}).toArray(function(err, result) {
                 if(err)
                     res.status(500).send(err);
                 var data = {};
+                result.forEach(r => {
+                    r.Date = r.Date.replace(/\-/g, '/');
+                    if(/^\d\d\/\d\d\/\d\d$/.test(String(r.Date))) {
+                        r.Date = '20' + r.Date.substring(r.Date.lastIndexOf('/') + 1) + '/' + r.Date.substring(0, 5);
+                    }
+                });
                 data.data = result;
                 collection.distinct('Date').then(dates => {
                     var datesRes = [];
                     dates.forEach(date => {
-                        date = date.replace('-', '/');
-                        var temp = date.substring(0, date.indexOf('/'));
+                        var temp;
+                        date = date.replace(/\-/g, '/');
+                        if(/^\d\d\/\d\d\/\d\d$/.test(String(date))) {
+                            temp = '20' + date.substring(date.lastIndexOf('/') + 1);
+                        }
+                        else 
+                            temp = date.substring(0, date.indexOf('/'));
                         if(datesRes.indexOf(temp) < 0)
                             datesRes.push(temp);
+                    });
+                    datesRes.sort((a, b) => {
+                        return a - b;
                     });
                     data.dates = datesRes;
                     res.send(data);
@@ -80,7 +108,26 @@ var getBondsData = function(url, type, year, res) {
             });
         }
     })
-}
+};
+
+
+// getBondsData("mongodb://localhost:27017", 1, 2016)
+
+// 下载Excel的接口方法。
+var getExcel = function(type, year) {
+    var path = '';
+    switch(type) {
+        case '1': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\中国国债\\中国国债历年信息\\' + year + '年中债国债收益率曲线标准期限信息.xlsx';break;
+        case '2': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\美国国债\\美国国债历年信息\\美国国债' + year + '年收益数据.xlsx';break;
+        case '3': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\SHIBOR\\SHIBOR历年信息\\Shibor数据' + year + '.xls';break;
+        default: throw TypeError('type标志错误！');
+    }
+    if(year == 2018 && type == 1) {
+        path = 'F:\\graduation-design\\Project\\WebProject\\Data2Mongo\\ChinaBonds\\2018年中债国债收益率曲线标准期限信息.xlsx';
+    }
+    return path;
+};
 
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
+module.exports.getExcel = getExcel;

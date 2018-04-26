@@ -54,6 +54,61 @@ let columns = [{
 	dataIndex: 'T10y',
 }];
 
+const handleChange = function(value) {
+	this.setState({
+		loading: true,
+		excelName: value + 'AmericaBondsData.xlsx',
+		excelPath: 'http://localhost:8000/Download?type=2&year=' + value
+	});
+	axios({
+		method: 'post',
+		url: '/BondsData',
+		dataType: 'json',
+		data: {
+			type: 2,
+			year: String(value)
+		}
+	}).then(res => {
+        var data = res.data;
+        if(data.data.length == 0) {
+            warning('No Data!')
+            this.setState({loading: false});
+            return 0;
+        }
+        var colNames = Object.keys(data.data[0]);
+        var index = colNames.indexOf('_id');
+        colNames.splice(index, 1);
+        var newColumns = colNames.map(name => {
+            return {
+                title: name,
+                dataIndex: name,
+                key: name
+            }
+        });
+        data.data.forEach(d => {
+            d.key = d._id;
+            colNames.forEach(name => {
+                if(name != 'Date') {
+                    var num = Number(d[name]);
+                    if(num == num)
+                        d[name] = num.toFixed(2);
+                }
+            });
+        });
+        this.setState({
+            years: data.dates,
+            data: data.data,
+            loading: false,
+            columns: newColumns,
+        });
+    }, err => {
+        this.setState({
+            loading: false
+        });
+        alert(err);
+    });
+}
+
 const warning = function(title, content) {
     Modal.warning({
       title,
@@ -61,69 +116,7 @@ const warning = function(title, content) {
     });
 }
 
-const handleChange = function(value) {
-	this.setState({
-		loading: true,
-		excelName: value + 'ChinaBondsData.xlsx',
-		excelPath: 'http://localhost:8000/Download?type=1&year=' + value
-	});
-	axios({
-		method: 'post',
-		url: '/BondsData',
-		dataType: 'json',
-		data: {
-			type: 1,
-			year: String(value)
-		}
-	}).then(res => {
-			var data = res.data;
-			if(data.data.length == 0) {
-				warning('No Data!')
-				this.setState({loading: false});
-				return 0;
-			}
-			var colNames = Object.keys(data.data[0]);
-			var index = colNames.indexOf('_id');
-			colNames.splice(index, 1);
-			var newColumns = colNames.map(name => {
-				if(name == 'Date')
-					return {
-						title: name,
-						dataIndex: name,
-						key: name
-					}
-				else
-					return {
-						title: name.substring(1),
-						dataIndex: name,
-						key: name
-					};
-			});
-			data.data.forEach(d => {
-				d.key = d._id;
-				colNames.forEach(name => {
-					if(name != 'Date') {
-						var num = Number(d[name]);
-						if(num == num)
-							d[name] = num.toFixed(2);
-					}
-				});
-			});
-			this.setState({
-				years: data.dates,
-				data: data.data,
-				loading: false,
-				columns: newColumns
-			});
-		}, err => {
-			this.setState({
-				loading: false
-			});
-			alert(err);
-		});
-};
-
-class ChinaBonds extends React.Component {
+class AmericaBonds extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -131,8 +124,8 @@ class ChinaBonds extends React.Component {
 			data: [],
 			loading: true,
 			columns,
-			excelName:'2018ChinaBondsData.xlsx',
-			excelPath:'http://localhost:8000/Download?type=1&year=2018'
+			excelName:'2018AmericaBondsData.xlsx',
+			excelPath:'http://localhost:8000/Download?type=2&year=2018'
 		};
 		this.handleChange = handleChange.bind(this);
 	}
@@ -141,17 +134,17 @@ class ChinaBonds extends React.Component {
 			url: '/BondsData',
 			method:'post',
 			data: {
-				type: 1,
+				type: 2,
 				year: 2018
 			},
 			dataType: 'json'
 		}).then(res => {
 			var data = res.data;
-			if(data.data.length == 0) {
-				warning('No Data!')
-				this.setState({loading: false});
-				return 0;
-			}
+            if(data.data.length == 0) {
+                warning('No Data!')
+                this.setState({loading: false});
+                return 0;
+            }
 			var colNames = Object.keys(data.data[0]);
 			var index = colNames.indexOf('_id');
 			colNames.splice(index, 1);
@@ -207,7 +200,7 @@ class ChinaBonds extends React.Component {
 					download={this.state.excelName}>
 					<Button type="primary">下载Excel</Button>
 				</a>
-				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='http://www.chinabond.com.cn/d2s/index.html'>中债网</a></span>
+				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield'>U.S. DEPARTMENT OF THE TREASURY</a></span>
 			</div>
 			{
 				!this.state.loading ? <Table columns={this.state.columns} dataSource={this.state.data} /> : null
@@ -219,4 +212,4 @@ class ChinaBonds extends React.Component {
 	}
 }
 
-export default ChinaBonds
+export default AmericaBonds

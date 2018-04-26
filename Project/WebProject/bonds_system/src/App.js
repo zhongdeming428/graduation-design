@@ -5,6 +5,7 @@ import { HashRouter, Route } from 'react-router-dom';
 import LeftMenu from './Components/LeftMenu';
 import News from './Components/News';
 import ChinaBonds from './Components/ChinaBonds';
+import AmericaBonds from './Components/AmericanBonds';
 
 const { Header, Content, Sider } = Layout;
 
@@ -27,6 +28,7 @@ class App extends Component {
 							<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
 								<Route exact path='/' component={News} />
 								<Route exact path='/BondsData/ChinaBonds' component={ChinaBonds} />
+								<Route exact path='/BondsData/AmericaBonds' component={AmericaBonds}/>
 							</Content>
 						</Layout>
 					</Layout>
