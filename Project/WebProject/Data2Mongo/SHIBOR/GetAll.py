@@ -22,6 +22,13 @@ def readExcel(filenames):
             doc = {}
             row = sheet.row_values(i)
             doc['Date'] = row[0]
+            if isinstance(row[0], float):
+                datetime = xlrd.xldate.xldate_as_tuple(row[0], 0)
+                year = str(datetime[0])
+                month = '0' + str(datetime[1]) if len(str(datetime[1])) == 1 else str(datetime[1])
+                day = '0' + str(datetime[2]) if len(str(datetime[2])) == 1 else str(datetime[2])
+                time = year + '/' + month + '/' + day
+                doc['Date'] = time
             doc['O/N'] = row[1]
             doc['W1'] = row[2]
             doc['W2'] = row[3]

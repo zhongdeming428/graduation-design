@@ -29,6 +29,13 @@ def readXLSX(file):
             seriesNo =  (i - 1) * data_count + j
             row = sheet.row_values(int(seriesNo))
             doc['Date'] = row[0]
+            if isinstance(row[0], float):
+                datetime = xlrd.xldate.xldate_as_tuple(row[0], 0)
+                year = str(datetime[0])
+                month = '0' + str(datetime[1]) if len(str(datetime[1])) == 1 else str(datetime[1])
+                day = '0' + str(datetime[2]) if len(str(datetime[2])) == 1 else str(datetime[2])
+                time = year + '/' + month + '/' + day
+                doc['Date'] = time
             doc['T' + row[1]] = row[3]
         data.append(doc)
     # print(data)
@@ -36,7 +43,7 @@ def readXLSX(file):
     return data
 
 
-# readXLSX('./Project/PCAOnBonds/中国国债/中国国债历年信息/2017年中债国债收益率曲线标准期限信息.xlsx')
+# readXLSX('./Project/PCAOnBonds/中国国债/中国国债历年信息/2002年中债国债收益率曲线标准期限信息.xlsx')
 # readXLSX(r'F:\graduation-design\Project\WebProject\Data2Mongo\ChinaBonds\2018年中债国债收益率曲线标准期限信息.xlsx')
 files = getFileNames(r'F:\graduation-design\Project\PCAOnBonds\中国国债\中国国债历年信息')
 files.append(r'F:\graduation-design\Project\WebProject\Data2Mongo\ChinaBonds\2018年中债国债收益率曲线标准期限信息.xlsx')
