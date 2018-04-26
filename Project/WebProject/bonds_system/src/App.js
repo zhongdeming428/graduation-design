@@ -6,6 +6,7 @@ import LeftMenu from './Components/LeftMenu';
 import News from './Components/News';
 import ChinaBonds from './Components/ChinaBonds';
 import AmericaBonds from './Components/AmericanBonds';
+import SHIBOR from './Components/SHIBOR';
 
 const { Header, Content, Sider } = Layout;
 
@@ -29,6 +30,7 @@ class App extends Component {
 								<Route exact path='/' component={News} />
 								<Route exact path='/BondsData/ChinaBonds' component={ChinaBonds} />
 								<Route exact path='/BondsData/AmericaBonds' component={AmericaBonds}/>
+								<Route exact path='/BondsData/SHIBOR' component={SHIBOR}/>
 							</Content>
 						</Layout>
 					</Layout>
