@@ -6,6 +6,7 @@ var getNewsData = require('./FetchDB').getNewsData;
 var getBondsData = require('./FetchDB').getBondsData;
 var getExcel = require('./FetchDB').getExcel;
 var getDetailData = require('./FetchDB').getDetailData;
+var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 
 var url = "mongodb://localhost:27017";
 
@@ -37,6 +38,12 @@ app.get('/Download', function(req, res) {
 app.get('/DetailData', function(req, res) {
     var type = req.query.type;
     getDetailData(url, type, res);
+});
+
+app.get('/YieldCurve', function(req, res) {
+    var type = req.query.type;
+    var date = req.query.date;
+    fitYieldCurve(type, date, res);
 });
 
 app.listen(8000);

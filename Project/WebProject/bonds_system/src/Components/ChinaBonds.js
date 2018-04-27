@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Select, Spin, Modal, Button } from 'antd';
 import axios from 'axios';
+import YieldCurve from './DisplayYieldCurve';
 const Option = Select.Option;
 
 
@@ -123,6 +124,11 @@ const handleChange = function(value) {
 		});
 };
 
+
+let setModalVisible = function(modalVisible) {
+    this.setState({ modalVisible });
+}
+
 class ChinaBonds extends React.Component {
 	constructor() {
 		super();
@@ -132,8 +138,10 @@ class ChinaBonds extends React.Component {
 			loading: true,
 			columns,
 			excelName:'2018ChinaBondsData.xlsx',
-			excelPath:'http://localhost:8000/Download?type=1&year=2018'
+			excelPath:'http://localhost:8000/Download?type=1&year=2018',
+			modalVisible: false
 		};
+		this.setModalVisible = setModalVisible.bind(this);
 		this.handleChange = handleChange.bind(this);
 	}
 	componentDidMount() {
@@ -207,6 +215,7 @@ class ChinaBonds extends React.Component {
 					download={this.state.excelName}>
 					<Button type="primary">下载Excel</Button>
 				</a>
+				<Button style={{display:'inline-block'}} type="primary" onClick={() => this.setModalVisible(true)}>最新收益率曲线</Button>
 				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='http://www.chinabond.com.cn/d2s/index.html'>中债网</a></span>
 			</div>
 			{
@@ -215,6 +224,17 @@ class ChinaBonds extends React.Component {
 			{ 
 				this.state.loading ? <Spin size="large" style={{ zIndex:'10000', position:'relative', display:'block', left:'50%',top:'50%', transform:'translate(-50%, -50%)'}}/> : null 
 			}
+			<Modal
+				title="收益率曲线展示"
+				wrapClassName="vertical-center-modal"
+				visible={this.state.modalVisible}
+				width = {800}
+				onCancel={() => this.setModalVisible(false)}
+				closable = {true}
+				footer = {null}
+				>
+				<YieldCurve/>
+			</Modal>
 		</div>
 	}
 }
