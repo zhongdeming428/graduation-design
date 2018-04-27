@@ -5,6 +5,7 @@ var multer = require('multer');
 var getNewsData = require('./FetchDB').getNewsData;
 var getBondsData = require('./FetchDB').getBondsData;
 var getExcel = require('./FetchDB').getExcel;
+var getDetailData = require('./FetchDB').getDetailData;
 
 var url = "mongodb://localhost:27017";
 
@@ -25,12 +26,17 @@ app.post('/BondsData', function(req, res) {
 
 app.get('/Download', function(req, res) {
     var type = req.query.type;
-    if (type > 3) {
+    if (+type > 3) {
         res.status(404).end();
     }
     var year = req.query.year;
     var path = getExcel(type, year);
     res.download(path);
+});
+
+app.get('/DetailData', function(req, res) {
+    var type = req.query.type;
+    getDetailData(url, type, res);
 });
 
 app.listen(8000);

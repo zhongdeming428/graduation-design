@@ -117,9 +117,12 @@ var getBondsData = function(url, type, year, res) {
 var getExcel = function(type, year) {
     var path = '';
     switch(type) {
-        case '1': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\中国国债\\中国国债历年信息\\' + year + '年中债国债收益率曲线标准期限信息.xlsx';break;
-        case '2': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\美国国债\\美国国债历年信息\\美国国债' + year + '年收益数据.xlsx';break;
-        case '3': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\SHIBOR\\SHIBOR历年信息\\Shibor数据' + year + '.xls';break;
+        case '1': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\中国国债\\中国国债历年信息\\' + year + '年中债国债收益率曲线标准期限信息.xlsx'; break;
+        case '2': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\美国国债\\美国国债历年信息\\美国国债' + year + '年收益数据.xlsx'; break;
+        case '3': path = 'F:\\graduation-design\\Project\\PCAOnBonds\\SHIBOR\\SHIBOR历年信息\\Shibor数据' + year + '.xls'; break;
+        case 'SZ': path = 'F:\\graduation-design\\Project\\WebProject\\Data2Mongo\\所有详细数据\\数据\\深企债.xlsx'; break;
+        case 'SH': path = 'F:\\graduation-design\\Project\\WebProject\\Data2Mongo\\所有详细数据\\数据\\沪企债.xlsx'; break;
+        case 'GZ': path = 'F:\\graduation-design\\Project\\WebProject\\Data2Mongo\\所有详细数据\\数据\\全部国债.xlsx'; break;
         default: throw TypeError('type标志错误！');
     }
     if(year == 2018 && type == 1) {
@@ -128,6 +131,23 @@ var getExcel = function(type, year) {
     return path;
 };
 
+var getDetailData = function(url, type, res) {
+    MongoClient.connect(url, function(err, dbo) {
+        if (err) res.status(500).send(err);
+        var db = dbo.db('BondsData');
+        var collection = db.collection('DetailData');
+        collection.find({'Exchange': type}).sort({Code:-1}).toArray((err, result) => {
+            if(err)
+                res.status(500).send(err)
+            res.status(200).send(result)
+            res.end();
+            dbo.close();
+        });
+    });
+};
+
+
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
+module.exports.getDetailData = getDetailData;

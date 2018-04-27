@@ -5,8 +5,7 @@
 	“/BondsData/AmericaBonds”：美国国债数据页面。
 	“/BondsData/LIBOR”：LIBOR数据页面。
 	“/BondsData/SHIBOR”：SHIBOR数据页面。
-	“/BondsData/SHBonds”：上海企业债券数据页面。
-	“/BondsData/SZBonds”：深圳企业债券数据页面。
+	“/DetailData”：深企债、沪企债、国债当前数据页面。
 （3）“/PCA/”：主成分分析页面。
 （4）“/VaR/”：VaR在险价值计算页面。
 	“/VaR/Data/”：中债网数据展示界面。
@@ -14,4 +13,4 @@
 （5）“/ValuationData/”：中债估值数据界面。
 （6）“/Search/”：债券数据查询页面。
 （7）“/CurveFit/”：收益率曲线拟合页面。
-（8）“Admin”：管理员界面，需要登录，用于处理数据更新等问题。
+（8）“/Admin”：管理员界面，需要登录，用于处理数据更新等问题。
