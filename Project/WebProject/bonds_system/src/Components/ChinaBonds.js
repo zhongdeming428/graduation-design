@@ -60,7 +60,7 @@ const warning = function(title, content) {
       title,
       content
     });
-}
+};
 
 const handleChange = function(value) {
 	this.setState({
@@ -134,7 +134,7 @@ class ChinaBonds extends React.Component {
 		super();
 		this.state = {
 			years: [],
-			data: [],
+			data: [{Date:'2002/02/04'}],
 			loading: true,
 			columns,
 			excelName:'2018ChinaBondsData.xlsx',
@@ -226,14 +226,13 @@ class ChinaBonds extends React.Component {
 			}
 			<Modal
 				title="收益率曲线展示"
-				wrapClassName="vertical-center-modal"
 				visible={this.state.modalVisible}
 				width = {800}
 				onCancel={() => this.setModalVisible(false)}
 				closable = {true}
 				footer = {null}
 				>
-				<YieldCurve/>
+				<YieldCurve latestDate={this.state.data[0].Date}/>
 			</Modal>
 		</div>
 	}

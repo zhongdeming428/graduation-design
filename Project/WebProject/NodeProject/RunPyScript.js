@@ -8,23 +8,21 @@ var fitYieldCurve = function(type, date, response) {
             console.log(err);
         else {
             res = res.filter(r => {
-                r = r.replace(/\s/g, '');
-                if(/^\d+(\.\d+)*$/g.test(r)) {
-                    tmp = parseFloat(r);
-                    if(tmp === tmp) {
-                        return true;
-                    }
-                }
+                return /Y\d+(\.\d+)?:\d+(\.\d+)?\r/g.test(String(r));
             });
             res = res.map(r => {
-                return (+r.replace(/\s/g, '')).toFixed(4);
+                return r.replace(/\r|Y/g, '');
+            });
+            var data = [];
+            res.forEach(r => {
+                data.push({year: r.split(':')[0], yield: r.split(':')[1]});
             });
             // console.log(res);
-            response.send(res);
+            response.send(data);
             response.end();
         }
     })
 };
 
-
+// fitYieldCurve('2', '2006/01/13')
 exports.fitYieldCurve = fitYieldCurve;

@@ -7,20 +7,65 @@ from numpy import *
 from scipy.optimize import fmin
 import pandas as pd
 
+# 关闭浮点数溢出的警告。
+seterr(over='ignore')
 Type = sys.argv[1]
 Date = sys.argv[2]
-# Type = '2'
-# Date = '2006/01/13'
+# Type = '1'
+# Date = '2016/01/04'
 Dic = {
     '1': 'ChinaBonds',
     '2': 'AmericaBonds'
+}
+Cols = {
+    'T0d': 'Y0',
+    'T1m': 'Y0.08',
+    'T2m': 'Y0.17',
+    'T3m': 'Y0.25',
+    'T6m': 'Y0.5',
+    'T9m': 'Y0.75',
+    'T1y': 'Y1',
+    'T2y': 'Y2',
+    'T3y': 'Y3',
+    'T4y': 'Y4',
+    'T5y': 'Y5',
+    'T6y': 'Y6',
+    'T7y': 'Y7',
+    'T8y': 'Y8',
+    'T9y': 'Y9',
+    'T10y': 'Y10',
+    'T15y': 'Y15',
+    'T20y': 'Y20',
+    'T30y': 'Y30',
+    'T40y': 'Y40',
+    'T50y': 'Y50',
+    'M1': 'Y0.08',
+    'M3': 'Y0.25',
+    'M6': 'Y0.5',
+    'Y1': 'Y1',
+    'Y2': 'Y2',
+    'Y3': 'Y3',
+    'Y4': 'Y4',
+    'Y5': 'Y5',
+    'Y6': 'Y6',
+    'Y7': 'Y7',
+    'Y8': 'Y8',
+    'Y9': 'Y9',
+    'Y10': 'Y10',
+    'Y20': 'Y20',
+    'Y30': 'Y30',
+    'Y40': 'Y40',
+    'Y50': 'Y50'
 }
 
 if Dic[Type] == None:
     raise TypeError
 conn = MongoClient('localhost', 27017)
 collection = conn.BondsData[Dic[Type]]
-result = collection.find_one({'$or': [{'Date': Date}, {'Date': Date[5:7] + '/' + Date[8:] + '/' + Date[2:4]}]});
+result = collection.find_one({'$or': [{'Date': Date[0:4]+'-'+Date[5:7]+'-'+Date[8:]}, {'Date': Date[0:4]+'/'+Date[5:7]+'/'+Date[8:]}, {'Date': Date[5:7] + '/' + Date[8:] + '/' + Date[2:4]}]});
+if result == None:
+    print('None')
+    exit(0);
 x = []
 _x = []
 y = []
@@ -58,8 +103,15 @@ j=[]
 # 计算整数到期期限节点的收益率。
 for h in range(1, maxYear + 1,1):
     j.append(c[0]+(c[1]+c[2])*(c[3]/h)*(1-exp(-h/c[3])-c[2]*exp(-h/c[3])))
-for i in j:
-    print(i)
-# 计算出的最优N-S参数。
-# print("")
-# print('Estimated Parameters: ', p)
+# for i in j:
+#     print(i)
+#  记得筛选数据。
+doc = {}
+for index, num in enumerate(j):
+    doc['Y' + str(index + 1)] = num
+for i, key in enumerate(result):
+    if i > 1:
+        doc[Cols[key]] = result[key]
+        
+for key in doc:
+    print(key + ':' + str(doc[key]))

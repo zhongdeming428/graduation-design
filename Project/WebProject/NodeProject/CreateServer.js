@@ -37,12 +37,17 @@ app.get('/Download', function(req, res) {
 
 app.get('/DetailData', function(req, res) {
     var type = req.query.type;
+    if(type == null)
+        res.status(400).send('type参数不能为空！');
     getDetailData(url, type, res);
 });
 
 app.get('/YieldCurve', function(req, res) {
     var type = req.query.type;
     var date = req.query.date;
+    if(type == null || date == null) {
+        res.status(400).send('参数不能为空！');
+    }
     fitYieldCurve(type, date, res);
 });
 
