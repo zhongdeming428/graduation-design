@@ -7,6 +7,7 @@ import News from './Components/News';
 import ChinaBonds from './Components/ChinaBonds';
 import AmericaBonds from './Components/AmericanBonds';
 import SHIBOR from './Components/SHIBOR';
+import LIBOR from './Components/LIBOR';
 
 const { Header, Content, Sider } = Layout;
 
@@ -31,6 +32,7 @@ class App extends Component {
 								<Route exact path='/BondsData/ChinaBonds' component={ChinaBonds} />
 								<Route exact path='/BondsData/AmericaBonds' component={AmericaBonds}/>
 								<Route exact path='/BondsData/SHIBOR' component={SHIBOR}/>
+								<Route exact path='/BondsData/LIBOR' component={LIBOR}/>
 							</Content>
 						</Layout>
 					</Layout>

@@ -54,18 +54,18 @@ let columns = [{
 	dataIndex: 'T10y',
 }];
 
+const warn = '由于官方数据格式问题，暂无对应年份数据下载，如有需要，请移步官网。';
+
 const handleChange = function(value) {
 	this.setState({
-		loading: true,
-		excelName: value + 'AmericaBondsData.xlsx',
-		excelPath: 'http://localhost:8000/Download?type=2&year=' + value
+		loading: true
 	});
 	axios({
 		method: 'post',
 		url: '/BondsData',
 		dataType: 'json',
 		data: {
-			type: 2,
+			type: 4,
 			year: String(value)
 		}
 	}).then(res => {
@@ -116,16 +116,14 @@ const warning = function(title, content) {
     });
 }
 
-class AmericaBonds extends React.Component {
+class LIBOR extends React.Component {
 	constructor() {
 		super();
 		this.state = {
 			years: [],
 			data: [],
 			loading: true,
-			columns,
-			excelName:'2018AmericaBondsData.xlsx',
-			excelPath:'http://localhost:8000/Download?type=2&year=2018'
+			columns
 		};
 		this.handleChange = handleChange.bind(this);
 	}
@@ -134,8 +132,8 @@ class AmericaBonds extends React.Component {
 			url: '/BondsData',
 			method:'post',
 			data: {
-				type: 2,
-				year: 2018
+				type: 4,
+				year: 2013
 			},
 			dataType: 'json'
 		}).then(res => {
@@ -149,18 +147,11 @@ class AmericaBonds extends React.Component {
 			var index = colNames.indexOf('_id');
 			colNames.splice(index, 1);
 			var newColumns = colNames.map(name => {
-				if(name == 'Date')
-					return {
-						title: name,
-						dataIndex: name,
-						key: name
-					}
-				else
-					return {
-						title: name.substring(1),
-						dataIndex: name,
-						key: name
-					};
+                return {
+                    title: name,
+                    dataIndex: name,
+                    key: name
+                }
 			});
 			data.data.forEach(d => {
 				d.key = d._id;
@@ -188,19 +179,15 @@ class AmericaBonds extends React.Component {
 	render() {
 		return <div>
 			<div style={{margin:'0px 0px 10px 0px'}}>
-				<Select defaultValue='2018'  style={{ width: 120 }} onChange={this.handleChange}>
+				<Select defaultValue='2013'  style={{ width: 120 }} onChange={this.handleChange}>
 					{
 						this.state.years.map(year => {
 							return <Option key={year} value={year}>{year}</Option>
 						})
 					}
 				</Select>
-				<a href={this.state.excelPath}
-					style={{display:'inline-block', padding:'5px', boxSizing:'border-box'}}
-					download={this.state.excelName}>
-					<Button type="primary" onClick={(e)=>{if(+this.state.excelName.substring(0,4)<2006){e.preventDefault();warning('File Not Exist!');}}}>下载Excel</Button>
-				</a>
-				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield'>U.S. DEPARTMENT OF THE TREASURY</a></span>
+				<Button style={{margin: '5px'}} type="primary" onClick={()=>{warning('File Not Exist!', warn)}}>下载Excel</Button>
+				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='https://www.bankrate.com/rates/interest-rates/libor.aspx'>Bankrate</a></span>
 			</div>
 			{
 				!this.state.loading ? <Table columns={this.state.columns} dataSource={this.state.data} /> : null
@@ -212,4 +199,4 @@ class AmericaBonds extends React.Component {
 	}
 }
 
-export default AmericaBonds
+export default LIBOR
