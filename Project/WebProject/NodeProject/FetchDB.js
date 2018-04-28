@@ -5,7 +5,7 @@ var DB = {
     '3': 'SHIBOR',
     '4': 'LIBOR'
 };
-
+var url = "mongodb://localhost:27017";
 
 //用于获取新闻公告数据的函数。
 var getNewsData = function(url, res) {
@@ -131,6 +131,7 @@ var getExcel = function(type, year) {
     return path;
 };
 
+// 获取所有债券详细数据的接口方法。
 var getDetailData = function(url, type, res) {
     MongoClient.connect(url, function(err, dbo) {
         if (err) res.status(500).send(err);
@@ -138,16 +139,48 @@ var getDetailData = function(url, type, res) {
         var collection = db.collection('DetailData');
         collection.find({'Exchange': type}).sort({Code:-1}).toArray((err, result) => {
             if(err)
-                res.status(500).send(err)
-            res.status(200).send(result)
+                res.status(500).send(err);
+            res.status(200).send(result);
             res.end();
             dbo.close();
         });
     });
 };
 
+var getZZValuation = function(url, res) {
+    MongoClient.connect(url, function(err, dbo) {
+        if(err)
+            res.status(500).send(err);
+        else {
+            var db = dbo.db('BondsData');
+            var collection = db.collection('ZZValuation');
+            collection.find().sort({'ValuationDate': -1}).toArray(function(err, result) {
+                if(err)
+                    res.status(500).send(err);
+                else {
+                    var data = [];
+                    result.forEach(function(r) {
+                        var obj = {};
+                        var keys = Object.keys(r);
+                        keys.forEach(k => {
+                            if(k !== '_id') {
+                                obj[k] = r[k];
+                            }
+                        });
+                        data.push(obj);
+                    });
+                    res.send(data);
+                    res.end();
+                }
+            });
+        }
+    });
+};
+
+
 
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
 module.exports.getDetailData = getDetailData;
+module.exports.getZZValuation = getZZValuation;

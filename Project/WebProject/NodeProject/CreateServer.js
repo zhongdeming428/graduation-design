@@ -7,6 +7,7 @@ var getBondsData = require('./FetchDB').getBondsData;
 var getExcel = require('./FetchDB').getExcel;
 var getDetailData = require('./FetchDB').getDetailData;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
+var getZZValuation = require('./FetchDB').getZZValuation;
 
 var url = "mongodb://localhost:27017";
 
@@ -49,6 +50,10 @@ app.get('/YieldCurve', function(req, res) {
         res.status(400).send('参数不能为空！');
     }
     fitYieldCurve(type, date, res);
+});
+
+app.get('/ZZValuation', function(req, res) {
+    getZZValuation(url, res);
 });
 
 app.listen(8000);

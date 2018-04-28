@@ -12,4 +12,6 @@
 .ant-layout-sider-trigger {
 	background: #06c
 }
-
+.ant-layout-content {
+	min-width: 900px;
+}
