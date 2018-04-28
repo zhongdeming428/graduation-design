@@ -11,6 +11,7 @@ import LIBOR from './Components/LIBOR';
 import DetailData from './Components/DetailData';
 import ZZValuation from './Components/ZZValuation';
 import ZZVaR from './Components/ZZVaR';
+import VaRCalculator from './Components/VaRCalculator';
 
 const { Header, Content, Sider } = Layout;
 
@@ -39,6 +40,7 @@ class App extends Component {
 								<Route exact path='/DetailData' component={DetailData}/>
 								<Route exact path='/ValuationData' component={ZZValuation}/>
 								<Route exact path='/VaRData' component={ZZVaR} />
+								<Route exact path='/VaRCalculator' component={VaRCalculator} />
 							</Content>
 						</Layout>
 					</Layout>
