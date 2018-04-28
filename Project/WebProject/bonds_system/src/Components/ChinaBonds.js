@@ -1,7 +1,9 @@
 import React from 'react';
 import { Table, Select, Spin, Modal, Button } from 'antd';
 import axios from 'axios';
-import YieldCurve from './DisplayYieldCurve';
+import YieldCurve from './YieldCurve';
+
+
 const Option = Select.Option;
 
 
@@ -232,7 +234,7 @@ class ChinaBonds extends React.Component {
 				closable = {true}
 				footer = {null}
 				>
-				<YieldCurve latestDate={this.state.data[0].Date}/>
+				<YieldCurve type='1' latestDate={this.state.data[0].Date}/>
 			</Modal>
 		</div>
 	}

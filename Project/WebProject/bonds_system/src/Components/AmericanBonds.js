@@ -1,6 +1,8 @@
 import React from 'react';
 import { Table, Select, Spin, Modal, Button } from 'antd';
 import axios from 'axios';
+import YieldCurve from './YieldCurve';
+
 const Option = Select.Option;
 
 
@@ -116,17 +118,22 @@ const warning = function(title, content) {
     });
 }
 
+let setModalVisible = function(modalVisible) {
+    this.setState({ modalVisible });
+}
+
 class AmericaBonds extends React.Component {
 	constructor() {
 		super();
 		this.state = {
 			years: [],
-			data: [],
+			data: [{Date: '2006/01/13'}],
 			loading: true,
 			columns,
 			excelName:'2018AmericaBondsData.xlsx',
 			excelPath:'http://localhost:8000/Download?type=2&year=2018'
 		};
+		this.setModalVisible = setModalVisible.bind(this);
 		this.handleChange = handleChange.bind(this);
 	}
 	componentDidMount() {
@@ -200,6 +207,7 @@ class AmericaBonds extends React.Component {
 					download={this.state.excelName}>
 					<Button type="primary" onClick={(e)=>{if(+this.state.excelName.substring(0,4)<2006){e.preventDefault();warning('File Not Exist!');}}}>下载Excel</Button>
 				</a>
+				<Button style={{display:'inline-block'}} type="primary" onClick={() => this.setModalVisible(true)}>最新收益率曲线</Button>
 				<span style={{display: 'block'}}>数据来源:<a target='_blank' href='https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield'>U.S. DEPARTMENT OF THE TREASURY</a></span>
 			</div>
 			{
@@ -208,6 +216,16 @@ class AmericaBonds extends React.Component {
 			{ 
 				this.state.loading ? <Spin size="large" style={{ zIndex:'10000', position:'relative', display:'block', left:'50%',top:'50%', transform:'translate(-50%, -50%)'}}/> : null 
 			}
+			<Modal
+				title="收益率曲线展示"
+				visible={this.state.modalVisible}
+				width = {800}
+				onCancel={() => this.setModalVisible(false)}
+				closable = {true}
+				footer = {null}
+				>
+				<YieldCurve type='1' latestDate={this.state.data[0].Date}/>
+			</Modal>
 		</div>
 	}
 }
