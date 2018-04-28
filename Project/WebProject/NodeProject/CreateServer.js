@@ -8,6 +8,7 @@ var getExcel = require('./FetchDB').getExcel;
 var getDetailData = require('./FetchDB').getDetailData;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var getZZValuation = require('./FetchDB').getZZValuation;
+var getZZVaR = require('./FetchDB').getZZVaR;
 
 var url = "mongodb://localhost:27017";
 
@@ -55,6 +56,10 @@ app.get('/YieldCurve', function(req, res) {
 app.get('/ZZValuation', function(req, res) {
     getZZValuation(url, res);
 });
+
+app.get('/ZZVaR', function(req, res) {
+    getZZVaR(url, res);
+})
 
 app.listen(8000);
 console.log('Node服务器正在监听8000端口 ... ...');

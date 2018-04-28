@@ -3,16 +3,14 @@ import { Table, Spin, Modal } from 'antd';
 import axios from 'axios';
 
 const Dic = {
-    'ValuationDate': '估值日期',
+    'CalculateDate': '计算日',
     'Code': '债券代码',
     'Name': '债券简称',
     'Exchange': '流通场所',
-    'RepaymentPeriod': '待偿期（年）',
-    'DailyValuationFullPrice': '日间估价全价(元)',
-    'AccruedInterestDuringTheDay': '日间应计利息(元)',
-    'ValuationNetPrice': '估价净价(元)',
-    'ValuationYield': '估价收益率(%)',
-    'CreditLevel': '债券债项评级'
+    'HoldingPeriod': '持有期',
+    'VaR': 'VaR',
+    'CVaR': 'CVaR',
+    'ConfidenceLevel': '置信水平'
 };
 
 const warning = function(title, content) {
@@ -73,15 +71,17 @@ const columns = [{
 }];
 
 const fetchData = function() {
-    axios.get('/ZZValuation').then(data => {
+    axios.get('/ZZVaR').then(data => {
         this.setState({loading: true});
         let result = data.data;
         if(result.length == 0) {
             warning('No Data!');
         }
         let Columns = Object.keys(result[0]);
+        let index = Columns.indexOf('_id');
+        Columns.splice(index, 1);
         result.forEach(r => {
-            r.key = r.Code;
+            r.key = r._id;
         });
         let newColumns = Columns.map(name => {
             return {
@@ -101,7 +101,7 @@ const fetchData = function() {
     });
 };
 
-class ZZValuation extends React.Component {
+class ZZVaR extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -116,7 +116,7 @@ class ZZValuation extends React.Component {
     }
     render() {
         return <div>
-            <span>数据来源：<a target='about_blank' href='http://yield.chinabond.com.cn/cbweb-mn/val/val_query_list?locale=zh_CN'>中债估值</a></span>
+            <span>数据来源：<a target='about_blank' href='http://yield.chinabond.com.cn/cbweb-mn/var/var_main?locale=zh_CN'>中债VaR</a></span>
             {
                 this.state.loading ? null : <Table columns={this.state.columns} dataSource={this.state.data} />
             }
@@ -127,4 +127,4 @@ class ZZValuation extends React.Component {
     }
 }
 
-export default ZZValuation;
+export default ZZVaR;

@@ -147,6 +147,7 @@ var getDetailData = function(url, type, res) {
     });
 };
 
+// 获取中债估值历史数据的接口方法。
 var getZZValuation = function(url, res) {
     MongoClient.connect(url, function(err, dbo) {
         if(err)
@@ -177,10 +178,39 @@ var getZZValuation = function(url, res) {
     });
 };
 
-
+var getZZVaR = function(url, res) {
+    MongoClient.connect(url, function(err, dbo) {
+        if(err)
+            res.status(500).send(err);
+        else {
+            var db = dbo.db('BondsData');
+            var collection = db.collection('ZZVaR');
+            collection.find().sort({'CalculateDate': -1}).toArray(function(err, result) {
+                if(err)
+                    res.status(500).send(err);
+                else {
+                    // var data = [];
+                    // result.forEach(function(r) {
+                    //     var obj = {};
+                    //     var keys = Object.keys(r);
+                    //     keys.forEach(k => {
+                    //         if(k !== '_id') {
+                    //             obj[k] = r[k];
+                    //         }
+                    //     });
+                    //     data.push(obj);
+                    // });
+                    res.send(result);
+                    res.end();
+                }
+            });
+        }
+    });
+};
 
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
 module.exports.getDetailData = getDetailData;
 module.exports.getZZValuation = getZZValuation;
+module.exports.getZZVaR = getZZVaR;

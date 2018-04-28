@@ -10,6 +10,7 @@ import SHIBOR from './Components/SHIBOR';
 import LIBOR from './Components/LIBOR';
 import DetailData from './Components/DetailData';
 import ZZValuation from './Components/ZZValuation';
+import ZZVaR from './Components/ZZVaR';
 
 const { Header, Content, Sider } = Layout;
 
@@ -37,6 +38,7 @@ class App extends Component {
 								<Route exact path='/BondsData/LIBOR' component={LIBOR}/>
 								<Route exact path='/DetailData' component={DetailData}/>
 								<Route exact path='/ValuationData' component={ZZValuation}/>
+								<Route exact path='/VaRData' component={ZZVaR} />
 							</Content>
 						</Layout>
 					</Layout>
