@@ -235,6 +235,31 @@ var verifyLogin = function(url, userName, password, res) {
     });
 };
 
+var verifyCookie = function(url, userName, password) {
+    return new Promise(function (resolve, reject) {
+        MongoClient.connect(url, function (err, dbo) {
+            if (err)
+                reject(err);
+            else {
+                var db = dbo.db('BondsData');
+                var collection = db.collection('Accounts');
+                collection.find({ userName, password }).toArray(function (err, res) {
+                    if (err)
+                        reject(err);
+                    else {
+                        if (res.length == 0) {
+                            resolve(-1);
+                        }
+                        else {
+                            resolve(1);
+                        }
+                    }
+                });
+            }
+        });
+    });
+};
+
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
@@ -242,3 +267,4 @@ module.exports.getDetailData = getDetailData;
 module.exports.getZZValuation = getZZValuation;
 module.exports.getZZVaR = getZZVaR;
 module.exports.verifyLogin = verifyLogin;
+module.exports.verifyCookie = verifyCookie;

@@ -47,7 +47,18 @@ var calculateVaR = function(type, data, file, confidenceLevel, holdingPeriod, si
     })
 };
 
+var refreshAll = function(res) {
+    pyShell.run('F:\\graduation-design\\Project\\WebProject\\PythonProject\\RefreshAll.py', function(err, result) {
+        if(err)
+            res.status(500).send(err);
+        else {
+            res.send('1');
+        }
+    });
+};
+
 // fitYieldCurve('2', '2006/01/13')
 // calculateVaR(1, '1,2,3', '', 0.95, 1, 1000)
 exports.calculateVaR = calculateVaR;
 exports.fitYieldCurve = fitYieldCurve;
+exports.refreshAll = refreshAll;

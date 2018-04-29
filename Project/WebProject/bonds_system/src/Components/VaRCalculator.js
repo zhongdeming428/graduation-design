@@ -88,7 +88,7 @@ const startCalculate = function() {
             result: res.data
         });
     }, err => {
-        message.error(err);
+        message.error(err.message);
         this.setState({calculating: false});
     });
 };

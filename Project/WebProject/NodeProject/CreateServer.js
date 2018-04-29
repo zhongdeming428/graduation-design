@@ -1,16 +1,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var upload = require('jquery-file-upload-middleware');
+var cookieParser = require('cookie-parser')
 
 var getNewsData = require('./FetchDB').getNewsData;
 var getBondsData = require('./FetchDB').getBondsData;
 var getExcel = require('./FetchDB').getExcel;
 var getDetailData = require('./FetchDB').getDetailData;
-var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var getZZValuation = require('./FetchDB').getZZValuation;
 var getZZVaR = require('./FetchDB').getZZVaR;
-var calculateVaR = require('./RunPyScript').calculateVaR;
 var verifyLogin = require('./FetchDB').verifyLogin;
+var verifyCookie = require('./FetchDB').verifyCookie;
+var calculateVaR = require('./RunPyScript').calculateVaR;
+var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
+var refreshAll = require('./RunPyScript').refreshAll;
 
 var url = "mongodb://localhost:27017";
 
@@ -18,6 +21,7 @@ app = express();
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/Upload', upload.fileHandler());
+app.use(cookieParser());
 upload.configure({
     uploadDir: __dirname + '/Uploads',
     uploadUrl: '/Uploads',
@@ -109,6 +113,20 @@ app.post('/Admin', function(req, res) {
         res.clearCookie('password', { expires: new Date(Date.now() + 900000)});
     }
     verifyLogin(url, req.body.userName, req.body.password, res);
+});
+
+app.get('/RefreshAll', function(req, res) {
+    if(req.cookies == null) {
+        res.status(500).send('参数不正确！');
+    }
+    else {
+        verifyCookie(url, req.cookies.userName, req.cookies.password).then(res => {
+            if (res === 1)
+                refreshAll(res);
+        }, err => {
+            res.status(500).send('参数不正确！');
+        });
+    }
 });
 
 app.listen(8000);

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Form, Icon, Input, Button, Checkbox, Modal } from 'antd';
 import WrappedNormalLoginForm from './Login';
+import Dashboard from './Dashboard';
 
 const FormItem = Form.Item;
 const setModalVisible = function(modalVisible) {
@@ -18,7 +19,8 @@ class Admin extends React.Component {
     constructor() {
         super();
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            isLogin: false
         };
         this.login = login.bind(this);
         this.setModalVisible = setModalVisible.bind(this);
@@ -32,7 +34,7 @@ class Admin extends React.Component {
     render() {
         return <div>
             {
-                this.state.isLogin ? <h1>登陆成功</h1> : null
+                this.state.isLogin ? <Dashboard/> : null
             }
 			<Modal
 				title="管理员登录"
