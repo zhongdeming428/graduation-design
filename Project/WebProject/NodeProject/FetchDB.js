@@ -197,9 +197,48 @@ var getZZVaR = function(url, res) {
     });
 };
 
+var verifyLogin = function(url, userName, password, res) {
+    MongoClient.connect(url, function(err, dbo) {
+        if(err) {
+            return res.send(err);
+        }
+        else {
+            var db = dbo.db('BondsData');
+            var collection = db.collection('Accounts');
+            collection.find({'userName': userName}).toArray(function(err, result) {
+                if(err) {
+                    return res.send(err);
+                }
+                else {
+                    if(result.length == 0) {
+                        res.send('-1');
+                        res.end();
+                    }
+                    else {
+                        collection.find({ 'userName': userName, 'password': password }).toArray(function (err, result) {
+                            if (err) {
+                                return res.send(err);
+                            }
+                            else {
+                                if (result.length == 0) {
+                                    return res.send('0');
+                                }
+                                else if (result.length == 1) {
+                                    return res.send('1');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+};
+
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
 module.exports.getDetailData = getDetailData;
 module.exports.getZZValuation = getZZValuation;
 module.exports.getZZVaR = getZZVaR;
+module.exports.verifyLogin = verifyLogin;

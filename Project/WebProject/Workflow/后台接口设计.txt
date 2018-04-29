@@ -6,3 +6,4 @@
 （6）“/ZZValuation”：GET方法，返回所有中债估值数据，按时间降序排列。
 （7）“/ZZVaR”：GET方法，返回所有中债VaR数据，按时间降序排列。
 （8）“/CalculateVaR”：POST方法，参数为type（数据上传方式：1为字符串手写数据，2为excel或者csv数据），data（手写字符串数据），file（上传文件的文件名），confidenceLevel（置信区间），holdingPeriod（持有期），simCount（模拟次数）。
+（9）“/Admin”：POST方法，验证账号密码登录，参数为userName， password和remember。返回值为-1账户不存在，0密码错误，1登录成功。

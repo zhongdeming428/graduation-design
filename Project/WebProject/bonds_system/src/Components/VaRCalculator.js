@@ -169,7 +169,7 @@ class VaRCalculator extends React.Component {
                     }
                     {
                         this.state.method === 1 ? 
-                        <TextArea onChange={this.dataChange} placeholder="在这里输入你的所有收益率历史数据，每个数据中使用逗号分隔。" autosize={{ minRows: 2, maxRows: 6 }} />
+                        <TextArea onChange={this.dataChange} placeholder="输入你的所有收益率历史数据，每个数据中使用逗号分隔，要求至少有两期历史收益数据。" autosize={{ minRows: 2, maxRows: 6 }} />
                         : null
                     }
                 </Timeline.Item>

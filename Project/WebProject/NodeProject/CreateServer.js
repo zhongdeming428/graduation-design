@@ -10,6 +10,7 @@ var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var getZZValuation = require('./FetchDB').getZZValuation;
 var getZZVaR = require('./FetchDB').getZZVaR;
 var calculateVaR = require('./RunPyScript').calculateVaR;
+var verifyLogin = require('./FetchDB').verifyLogin;
 
 var url = "mongodb://localhost:27017";
 
@@ -27,6 +28,8 @@ upload.configure({
         }
     }
 });
+
+//https://github.com/aguidrevitch/jquery-file-upload-middleware/issues/61
 upload.on("begin", function (fileInfo) {
     fileInfo.name = fileInfo.originalName;
 });
@@ -94,6 +97,18 @@ app.post('/CalculateVaR', function(req, res) {
     var holdingPeriod = req.body.holdingPeriod;
     var simCount = req.body.simCount;
     calculateVaR(type, data, file, confidenceLevel, holdingPeriod, simCount, res);
+});
+
+app.post('/Admin', function(req, res) {
+    if(req.body.remember == true) {
+        res.cookie('userName', req.body.userName, { expires: new Date(Date.now() + 900000)});
+        res.cookie('password', req.body.password, { expires: new Date(Date.now() + 900000)});
+    }
+    else {
+        res.clearCookie('userName', { expires: new Date(Date.now() + 900000)});
+        res.clearCookie('password', { expires: new Date(Date.now() + 900000)});
+    }
+    verifyLogin(url, req.body.userName, req.body.password, res);
 });
 
 app.listen(8000);
