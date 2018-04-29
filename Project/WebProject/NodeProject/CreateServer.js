@@ -27,6 +27,9 @@ upload.configure({
         }
     }
 });
+upload.on("begin", function (fileInfo) {
+    fileInfo.name = fileInfo.originalName;
+});
 
 app.get('/News', function(req, res) {
     getNewsData(url, res);

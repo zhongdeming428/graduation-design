@@ -5,6 +5,7 @@ import re
 import numpy as np
 from scipy.stats import norm
 import xlrd
+import os
 
 data = sys.argv[1]
 confidenceLevel = float(sys.argv[2])
@@ -51,3 +52,4 @@ else :
         for r in col:
             yields.append(float(r))
         print(str(calculateVaR(yields, confidenceLevel, holdingPeriod, simCount)))
+    
