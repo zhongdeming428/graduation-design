@@ -9,6 +9,7 @@ var getDetailData = require('./FetchDB').getDetailData;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var getZZValuation = require('./FetchDB').getZZValuation;
 var getZZVaR = require('./FetchDB').getZZVaR;
+var calculateVaR = require('./RunPyScript').calculateVaR;
 
 var url = "mongodb://localhost:27017";
 
@@ -80,6 +81,16 @@ app.post('/Uploads', function(req, res, next){
             return '/Uploads'
         }
     })(req, res, next);
+});
+
+app.post('/CalculateVaR', function(req, res) {
+    var type = req.body.type;
+    var data = req.body.data;
+    var file = req.body.file;
+    var confidenceLevel = req.body.confidenceLevel;
+    var holdingPeriod = req.body.holdingPeriod;
+    var simCount = req.body.simCount;
+    calculateVaR(type, data, file, confidenceLevel, holdingPeriod, simCount, res);
 });
 
 app.listen(8000);

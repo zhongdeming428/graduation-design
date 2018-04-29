@@ -2,7 +2,6 @@
 
 import sys
 from pymongo import MongoClient
-import pylab
 from numpy import *
 from scipy.optimize import fmin
 import pandas as pd

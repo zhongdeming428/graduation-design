@@ -189,17 +189,6 @@ var getZZVaR = function(url, res) {
                 if(err)
                     res.status(500).send(err);
                 else {
-                    // var data = [];
-                    // result.forEach(function(r) {
-                    //     var obj = {};
-                    //     var keys = Object.keys(r);
-                    //     keys.forEach(k => {
-                    //         if(k !== '_id') {
-                    //             obj[k] = r[k];
-                    //         }
-                    //     });
-                    //     data.push(obj);
-                    // });
                     res.send(result);
                     res.end();
                 }

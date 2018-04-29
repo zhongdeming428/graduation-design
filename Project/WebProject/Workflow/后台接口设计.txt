@@ -4,3 +4,5 @@
 （4）“/DetailData”: GET方法，通过url传递type（SH/SZ/GZ）来选择数据。
 （5）“/YieldCurve”：GET方法，通过url传递date与type参数，返回拟合的收益率曲线数据。
 （6）“/ZZValuation”：GET方法，返回所有中债估值数据，按时间降序排列。
+（7）“/ZZVaR”：GET方法，返回所有中债VaR数据，按时间降序排列。
+（8）“/CalculateVaR”：POST方法，参数为type（数据上传方式：1为字符串手写数据，2为excel或者csv数据），data（手写字符串数据），file（上传文件的文件名），confidenceLevel（置信区间），holdingPeriod（持有期），simCount（模拟次数）。
