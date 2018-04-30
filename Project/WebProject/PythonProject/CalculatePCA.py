@@ -1,11 +1,9 @@
 #!/usr/bin/python
 
 import numpy as np
+import uuid
 
-ChinaBond = './Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv'
-AmericaBond = './Project/PCAOnBonds/美国国债/美国国债历年信息汇总/国债数据 - FoPython.csv'
 SHIBOR = './Project/PCAOnBonds/SHIBOR/SHIBOR历年信息汇总/SHIBOR数据.csv'
-CSVChina = './Project/PCAOnBonds/中国国债/中国国债历年信息汇总/各项指标对应系数.csv'
 CSVAmerica = './Project/PCAOnBonds/美国国债/美国国债历年信息汇总/各项指标对应系数.csv'
 
 # 读取.csv文件的函数，返回一个numpy矩阵。
@@ -14,8 +12,6 @@ def readCSV(path):
     matrix = np.matrix(data)
     return matrix
 
-# readCSV('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv')
-
 # 计算贡献率的函数。
 def calculateContribRate(eigenVals):  
     sortArray=np.sort(eigenVals)
@@ -23,6 +19,7 @@ def calculateContribRate(eigenVals):
     arraySum=sum(sortArray)
     # rates = [['贡献度','占比', '累计占比']]
     rates = '贡献度,占比,累计占比\n'
+    # rates = ''
     sumRate = 0
     for num in sortArray:
         sumRate = sumRate + num
@@ -53,7 +50,13 @@ def PCA(matrix, count, csvPath):
     covMat = np.cov(meanRemoved, rowvar=0)
     eigenVals, eigenVectors = np.linalg.eig(np.mat(covMat))
     # 打印累计贡献率。
-    print(calculateContribRate(eigenVals))
+    # print(calculateContribRate(eigenVals))
+    rates = calculateContribRate(eigenVals)
+    ratesPath = 'F:\\graduation-design\\Project\\WebProject\\NodeProject\\data\\' + str(uuid.uuid1()) +  '.csv'
+    print(ratesPath)
+    f = open(ratesPath, 'w')
+    f.write(rates)
+    f.close()
     # 将特征值从小到大进行排序。
     eigenValsIndex = np.argsort(eigenVals)
     # 返回从尾部开始的指定项。
@@ -61,25 +64,12 @@ def PCA(matrix, count, csvPath):
     # 按照特征值重新选取特征向量。
     newEigenVectors = eigenVectors[:, eigenValsIndex]
     # lowDDataMat即为降维后的矩阵（已经归一化）。
-    print('各指标对应系数：')
-    print(newEigenVectors)
-    # D2Matrix2CSV(newEigenVectors, csvPath)
+    # print('各指标对应系数：')
+    # print(newEigenVectors)
+    D2Matrix2CSV(newEigenVectors, csvPath)
     lowDDataMat = meanRemoved * newEigenVectors
     return lowDDataMat
 
-# import numpy as np
-# from matplotlib.mlab import PCA
-
-# 以下是使用matplotlib模块实现PCA，但是还不清楚返回值具体的属性，没有接口文档可供参考。
-# data = np.array(readCSV('./Project/PCAOnBonds/中国国债/中国国债历年信息汇总/国债数据.csv'))
-# results = PCA(data)
-# print(results.Wt)
-# print(results.Y)
-# print(results.a)
-# print(results.fracs)
-# print(results.mu)
-# print(results.s)
-# print(results.sigma)
-
-
-print(PCA(readCSV(SHIBOR), 3, CSVAmerica))
+loadingPath = 'F:\\graduation-design\\Project\\WebProject\\NodeProject\\data\\' + str(uuid.uuid1()) + '.csv'
+print(loadingPath)
+PCA(readCSV(SHIBOR), 3, loadingPath)

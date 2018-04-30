@@ -13,6 +13,7 @@ import ZZValuation from './Components/ZZValuation';
 import ZZVaR from './Components/ZZVaR';
 import VaRCalculator from './Components/VaRCalculator';
 import Admin from './Components/Admin';
+import PCA from './Components/PCA';
 
 const { Header, Content, Sider } = Layout;
 
@@ -42,6 +43,7 @@ class App extends Component {
 								<Route exact path='/ValuationData' component={ZZValuation}/>
 								<Route exact path='/VaRData' component={ZZVaR} />
 								<Route exact path='/VaRCalculator' component={VaRCalculator} />
+								<Route exact path='/PCA' component={PCA} />
 								<Route exact path='/Admin' component={Admin} />
 							</Content>
 						</Layout>

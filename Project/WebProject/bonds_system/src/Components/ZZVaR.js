@@ -96,7 +96,7 @@ const fetchData = function() {
             loading: false
         });
     }, err => {
-        warning('Error!', err);
+        warning('Error!', err.message);
         this.setState({loading: false});
     });
 };
