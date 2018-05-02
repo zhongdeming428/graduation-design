@@ -282,7 +282,7 @@ var searchOneCollection = function(url, code, type, name) {
                 if(code == '') {
                     // 根据债券简称name来搜索。
                     if(type == 1) {
-                        collection.find({'Name': name, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                        collection.find({'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'GZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -291,7 +291,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 2) {
-                        collection.find({'Name': name, 'Exchange': 'SH'}).toArray(function(err, result) {
+                        collection.find({'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'SH'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -300,7 +300,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 3) {
-                        collection.find({'Name': name, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                        collection.find({'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'SZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -309,7 +309,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else {
-                        collection.find({'Name': name}).toArray(function(err, result) {
+                        collection.find({'Name': new RegExp('.*'+name+'.*')}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -321,7 +321,7 @@ var searchOneCollection = function(url, code, type, name) {
                 else if(name == '') {
                     //根据债券代码code来搜索。
                     if(type == 1) {
-                        collection.find({'Code': code, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Exchange': 'GZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -330,7 +330,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 2) {
-                        collection.find({'Code': code, 'Exchange': 'SH'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Exchange': 'SH'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -339,7 +339,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 3) {
-                        collection.find({'Code': code, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Exchange': 'SZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -348,7 +348,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else {
-                        collection.find({'Code': code}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*')}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -360,7 +360,7 @@ var searchOneCollection = function(url, code, type, name) {
                 else {
                     //根据两个条件做交集搜索。
                     if(type == 1) {
-                        collection.find({'Code': code, 'Name': name, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'GZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -369,7 +369,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 2) {
-                        collection.find({'Code': code, 'Name': name, 'Exchange': 'SH'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'SH'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -378,7 +378,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else if(type == 3) {
-                        collection.find({'Code': code, 'Name': name, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Name': new RegExp('.*'+name+'.*'), 'Exchange': 'SZ'}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -387,7 +387,7 @@ var searchOneCollection = function(url, code, type, name) {
                         });
                     }
                     else {
-                        collection.find({'Code': code, 'Name': name}).toArray(function(err, result) {
+                        collection.find({'Code': new RegExp('.*'+code+'.*'), 'Name': name}).toArray(function(err, result) {
                             if(err)
                                 reject(err);
                             else {
@@ -404,11 +404,11 @@ var searchOneCollection = function(url, code, type, name) {
 var searchData = async function(url, code, name, type, res) {
     var result = {};
     if(type == 0) {
-        var data1 = await searchOneCollection(url, code, 1, name);
-        var data2 = await searchOneCollection(url, code, 2, name);
-        var data3 = await searchOneCollection(url, code, 3, name);
-        var data4 = await searchOneCollection(url, code, 4, name);
-        var data5 = await searchOneCollection(url, code, 5, name);
+        var data1 = await searchOneCollection(url, code, '1', name);
+        var data2 = await searchOneCollection(url, code, '2', name);
+        var data3 = await searchOneCollection(url, code, '3', name);
+        var data4 = await searchOneCollection(url, code, '4', name);
+        var data5 = await searchOneCollection(url, code, '5', name);
         result = {
             '国债数据': data1,
             '沪企债': data2,
@@ -418,7 +418,7 @@ var searchData = async function(url, code, name, type, res) {
         };
     }
     else {
-        var data = await searchOneCollection(url, code, type, name);
+        var data = await searchOneCollection(url, code, String(type), name);
         result = data;
     }
     res.send(result);
