@@ -2,9 +2,10 @@
 
 import numpy as np
 import uuid
+import sys
 
-SHIBOR = './Project/PCAOnBonds/SHIBOR/SHIBOR历年信息汇总/SHIBOR数据.csv'
-CSVAmerica = './Project/PCAOnBonds/美国国债/美国国债历年信息汇总/各项指标对应系数.csv'
+csvPath = sys.argv[1]
+componentCount = int(sys.argv[2])
 
 # 读取.csv文件的函数，返回一个numpy矩阵。
 def readCSV(path):
@@ -18,8 +19,8 @@ def calculateContribRate(eigenVals):
     sortArray=sortArray[-1::-1]
     arraySum=sum(sortArray)
     # rates = [['贡献度','占比', '累计占比']]
-    rates = '贡献度,占比,累计占比\n'
-    # rates = ''
+    # rates = '贡献度,占比,累计占比\n'
+    rates = ''
     sumRate = 0
     for num in sortArray:
         sumRate = sumRate + num
@@ -72,4 +73,5 @@ def PCA(matrix, count, csvPath):
 
 loadingPath = 'F:\\graduation-design\\Project\\WebProject\\NodeProject\\data\\' + str(uuid.uuid1()) + '.csv'
 print(loadingPath)
-PCA(readCSV(SHIBOR), 3, loadingPath)
+PCA(readCSV(csvPath), componentCount, loadingPath)
+# PCA(readCSV(r'F:\graduation-design\Project\WebProject\NodeProject\data\SHIBOR数据.csv'), 3, loadingPath)

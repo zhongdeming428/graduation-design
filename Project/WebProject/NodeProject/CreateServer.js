@@ -14,6 +14,7 @@ var verifyCookie = require('./FetchDB').verifyCookie;
 var calculateVaR = require('./RunPyScript').calculateVaR;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var refreshAll = require('./RunPyScript').refreshAll;
+var calculatePCA = require('./RunPyScript').calculatePCA;
 
 var url = "mongodb://localhost:27017";
 
@@ -127,6 +128,14 @@ app.get('/RefreshAll', function(req, res) {
             res.status(500).send('参数不正确！');
         });
     }
+});
+
+app.post('/CalculatePCA', function(req, res) {
+    var type = req.body.type;
+    var data = req.body.data;
+    var file = req.body.file;
+    var componentCount = req.body.componentCount;
+    calculatePCA(type, data, file, componentCount, res);
 });
 
 app.listen(8000);
