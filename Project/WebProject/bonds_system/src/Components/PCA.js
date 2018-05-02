@@ -4,6 +4,20 @@ import { Select, Upload, InputNumber, Table, Input, Modal, message, Icon, Timeli
 
 const Option = Select.Option;
 const Dragger = Upload.Dragger;
+const ratesColumns = [
+    {
+        title: '特征值',
+        dataIndex: 'eigenVals'
+    },
+    {
+        title: '贡献度',
+        dataIndex: 'rate'
+    },
+    {
+        title: '累计贡献度',
+        dataIndex: 'culmulativeRate'
+    }
+];
 const props = {
     name: 'file',
     multiple: false,
@@ -91,17 +105,73 @@ const addData = function() {
 const deleteData = function() {
 
 };
+const PCCountChange = function(value) {
+    this.setState({
+        componentCount: value
+    });
+};
+const startCalculate = function() {
+    this.setState({calculating: true});
+    let type = this.state.type;
+    // 手写功能暂未实现，先置为空字符。
+    let data = '';
+    let file = this.state.filename;
+    let componentCount = this.state.componentCount;
+    axios.post('/CalculatePCA', {
+        type,
+        file,
+        data,
+        componentCount
+    }).then(res => {
+        let rates = res.data.rates;
+        let loadings = res.data.loadings;
+        let newLoadings = [];
+        loadings.forEach(l => {
+            let tmp = {};
+            l.forEach((d, i) => {
+                tmp['主成分' + String(i + 1)] = d;
+            });
+            newLoadings.push(tmp);
+        });
+        let obj = newLoadings[0];
+        let keys = Object.keys(obj);
+        let result = keys.map(k => {
+            let obj = {};
+            obj['title'] = k;
+            obj['dataIndex'] = k;
+            return obj;
+        });
+        this.setState({
+            calculating: false,
+            result: {
+                rates,
+                loadings: newLoadings,
+                loadingsColumns: result
+            }
+        });
+    }, err => {
+        message.error(err.message);
+        this.setState({calculating: false});
+    });
+};
 class PCA extends React.Component {
     constructor() {
         super();
         this.state = {
             type: 2,
             table: null,
+            data: '',
             tableColCount: 10,
-            filename: ''
+            filename: '',
+            componentCount: 3,
+            calculating: false,
+            result: null
         };
         this.MethodChange = MethodChange.bind(this);
         this.generateTable = generateTable.bind(this);
+        this.PCCountChange = PCCountChange.bind(this);
+        this.startCalculate = startCalculate.bind(this);
+        fileUploaded = fileUploaded.bind(this);
     }
     render() {
         return <div>
@@ -141,38 +211,33 @@ class PCA extends React.Component {
                     }
                 </Timeline.Item>
                 <Timeline.Item>
-                    <p><strong>选择置信水平和持有期</strong></p>
-                    <span>置信水平：</span>
-                    <Select defaultValue='0.95' style={{ width: 120 }} onChange={this.CLChange}>
-                        <Option key={0.95} value={0.95}>0.95</Option>
-                        <Option key={0.99} value={0.99}>0.99</Option>
-                    </Select>
-                    &nbsp;&nbsp;&nbsp;
-                    <span>持有期：</span>
-                    <InputNumber min={1} max={1000} defaultValue={1} onChange={this.HPChange} />
-                </Timeline.Item>
-                <Timeline.Item>
-                    <p><strong>填写Monte-Carlo模拟次数</strong></p>
-                    <span>模拟次数：</span>
-                    <InputNumber min={1000} max={100000} defaultValue={10000} onChange={this.simCountChange} />
+                    <p><strong>填写所需主成分个数</strong></p>
+                    <span>主成分个数：</span>
+                    <InputNumber min={1} max={100} defaultValue={3} onChange={this.PCCountChange} />
                 </Timeline.Item>
                 <Timeline.Item>
                     <p><strong>确认信息，开始计算</strong></p>
-                    <Button type='primary' onClick={this.startCalculate}>计算VaR</Button>
+                    <Button type='primary' onClick={this.startCalculate}>PCA分析</Button>
                 </Timeline.Item>
                 <Timeline.Item>
-                    <p><strong>得到VaR值</strong></p>
+                    <p><strong>得到主成分分析结果</strong></p>
                     {
                         this.state.calculating ? 
                         <Spin size="large" style={{ zIndex:'10000', position:'relative', display:'block', left:'50%',top:'50%', transform:'translate(-50%, -50%)'}}/>
                         : null
                     }
                     {
-                        this.state.result != '' ? <h1>
+                        this.state.result != null ? 
+                        <div>
+                            <h2>各维度贡献度</h2>
                             {
-                                this.state.result
+                                <Table columns={ratesColumns} dataSource={this.state.result.rates}/>
                             }
-                        </h1>
+                            <h2>因子载荷矩阵</h2>
+                            {
+                                <Table columns={this.state.result.loadingsColumns} dataSource={this.state.result.loadings}/>
+                            }
+                        </div>
                         : null
                     }
                 </Timeline.Item>

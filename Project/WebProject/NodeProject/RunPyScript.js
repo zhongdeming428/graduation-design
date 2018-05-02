@@ -64,16 +64,16 @@ var calculatePCA = function(type, data, file, componentCount, res) {
         data = data;
     }
     else if(type == 2) {
-        data = __dirname + '\\data\\' + file;
+        data = __dirname + '\\Uploads\\' + file;
     }
     else {
-        res.status(400).send('type参数错误！');
+        return res.status(400).send('type参数错误！');
     }
     pyShell.run('F:\\graduation-design\\Project\\WebProject\\PythonProject\\CalculatePCA.py', {
         args: [data, componentCount]
     }, function(err, result) {
         if(err) {
-            res.status(500).send(err);
+            return res.status(500).send(err);
         }
         else {
             // ...
@@ -87,9 +87,9 @@ var calculatePCA = function(type, data, file, componentCount, res) {
                 if(i < ratesRows.length - 1) {
                     row = row.split(',');
                     var obj = {};
-                    obj['eigenVals'] = parseFloat(row[0]);
-                    obj['rate'] = parseFloat(row[1]);
-                    obj['culmulativeRate'] = parseFloat(row[2]);
+                    obj['eigenVals'] = parseFloat(row[0]).toFixed(2);
+                    obj['rate'] = parseFloat(row[1]).toFixed(2);
+                    obj['culmulativeRate'] = parseFloat(row[2]).toFixed(4);
                     rates.push(obj);
                 }
             });
@@ -101,7 +101,7 @@ var calculatePCA = function(type, data, file, componentCount, res) {
                     (function(row) {
                         var data = [];
                         row.forEach((r, i) => {
-                            data.push(r);
+                            data.push(parseFloat(r).toFixed(2));
                         });
                         loadings.push(data);
                     })(row);
