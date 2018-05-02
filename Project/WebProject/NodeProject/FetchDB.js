@@ -264,6 +264,168 @@ var verifyCookie = function(url, userName, password) {
     });
 };
 
+var searchOneCollection = function(url, code, type, name) {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(url, function(err, dbo) {
+            if(err)
+                return err;
+            else {
+                var db = dbo.db('BondsData');
+                var collection;
+                switch(type) {
+                    case '1':
+                    case '2':
+                    case '3': collection = db.collection('DetailData');break;
+                    case '4': collection = db.collection('ZZVaR');break;
+                    case '5': collection = db.collection('ZZValuation');break;
+                }
+                if(code == '') {
+                    // 根据债券简称name来搜索。
+                    if(type == 1) {
+                        collection.find({'Name': name, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 2) {
+                        collection.find({'Name': name, 'Exchange': 'SH'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 3) {
+                        collection.find({'Name': name, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else {
+                        collection.find({'Name': name}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                }
+                else if(name == '') {
+                    //根据债券代码code来搜索。
+                    if(type == 1) {
+                        collection.find({'Code': code, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 2) {
+                        collection.find({'Code': code, 'Exchange': 'SH'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 3) {
+                        collection.find({'Code': code, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else {
+                        collection.find({'Code': code}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                }
+                else {
+                    //根据两个条件做交集搜索。
+                    if(type == 1) {
+                        collection.find({'Code': code, 'Name': name, 'Exchange': 'GZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 2) {
+                        collection.find({'Code': code, 'Name': name, 'Exchange': 'SH'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else if(type == 3) {
+                        collection.find({'Code': code, 'Name': name, 'Exchange': 'SZ'}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                    else {
+                        collection.find({'Code': code, 'Name': name}).toArray(function(err, result) {
+                            if(err)
+                                reject(err);
+                            else {
+                                resolve(result);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    });
+};
+
+var searchData = async function(url, code, name, type, res) {
+    var result = {};
+    if(type == 0) {
+        var data1 = await searchOneCollection(url, code, 1, name);
+        var data2 = await searchOneCollection(url, code, 2, name);
+        var data3 = await searchOneCollection(url, code, 3, name);
+        var data4 = await searchOneCollection(url, code, 4, name);
+        var data5 = await searchOneCollection(url, code, 5, name);
+        result = {
+            '国债数据': data1,
+            '沪企债': data2,
+            '深企债': data3,
+            '中债VaR': data4,
+            '中债估值': data5
+        };
+    }
+    else {
+        var data = await searchOneCollection(url, code, type, name);
+        result = data;
+    }
+    res.send(result);
+};
+
+
+
 module.exports.getNewsData = getNewsData;
 module.exports.getBondsData = getBondsData;
 module.exports.getExcel = getExcel;
@@ -272,3 +434,4 @@ module.exports.getZZValuation = getZZValuation;
 module.exports.getZZVaR = getZZVaR;
 module.exports.verifyLogin = verifyLogin;
 module.exports.verifyCookie = verifyCookie;
+module.exports.searchData = searchData;

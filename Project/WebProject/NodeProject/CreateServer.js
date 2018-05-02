@@ -11,6 +11,7 @@ var getZZValuation = require('./FetchDB').getZZValuation;
 var getZZVaR = require('./FetchDB').getZZVaR;
 var verifyLogin = require('./FetchDB').verifyLogin;
 var verifyCookie = require('./FetchDB').verifyCookie;
+var searchData = require('./FetchDB').searchData;
 var calculateVaR = require('./RunPyScript').calculateVaR;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var refreshAll = require('./RunPyScript').refreshAll;
@@ -136,6 +137,13 @@ app.post('/CalculatePCA', function(req, res) {
     var file = req.body.file;
     var componentCount = req.body.componentCount;
     calculatePCA(type, data, file, componentCount, res);
+});
+
+app.post('/Search', function(req, res) {
+    var code = req.body.code;
+    var name = req.body.name;
+    var type = req.body.type;
+    searchData(url, code, name, type, res)
 });
 
 app.listen(8000);

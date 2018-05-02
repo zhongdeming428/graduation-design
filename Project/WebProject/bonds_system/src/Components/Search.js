@@ -1,13 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import { Select, Input, Button, Icon } from 'antd';
+import { Select, Input, Button, Icon, message } from 'antd';
 
 const { Option } = Select;
 const handleChange = function(value) {
-    this.setState({class: value});
+    this.setState({type: value});
 };
 const search = function() {
     console.log(this.state);
+    if(this.state.name == '' && this.state.code == '') {
+        message.warn('债券代码和债券简称不可以同时为空！')
+    }
 };
 
 class Search extends React.Component {
@@ -16,7 +19,7 @@ class Search extends React.Component {
         this.state = {
             code: '',
             name: '',
-            class: 0
+            type: 0
         };
         this.handleChange = handleChange.bind(this);
         this.search = search.bind(this);
