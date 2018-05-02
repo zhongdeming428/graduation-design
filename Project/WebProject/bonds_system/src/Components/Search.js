@@ -51,6 +51,7 @@ const getColumns = function(data) {
         let obj = {};
         obj['title'] = Dictionary[k];
         obj['dataIndex'] = k;
+        obj['key'] = k;
         result.push(obj);
     });
     return result;
