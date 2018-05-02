@@ -22,6 +22,7 @@ class News extends React.Component {
     }
     render() {
         return <div>
+            <h2>债券新闻公告</h2>
             <List borderd="true"
             renderItem={item => (<List.Item>
                 <a href={item.Url} target='_blank'>{item.Title}</a>

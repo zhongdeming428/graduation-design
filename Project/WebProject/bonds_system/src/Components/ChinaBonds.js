@@ -204,6 +204,7 @@ class ChinaBonds extends React.Component {
 	}
 	render() {
 		return <div>
+			<h2>中国国债日收益率历史数据</h2>
 			<div style={{margin:'0px 0px 10px 0px'}}>
 				<Select defaultValue='2018'  style={{ width: 120 }} onChange={this.handleChange}>
 					{

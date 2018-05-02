@@ -147,9 +147,9 @@ class VaRCalculator extends React.Component {
             <Timeline>
                 <Timeline.Item>
                     <p><strong>选择收益率历史数据的上传方式</strong></p>
-                    <Select defaultValue='Excel或CSV数据文件上传'  style={{ width: 200 }} onChange={this.MethodChange}>
-                        <Option key={1} value={1}>填写数据上传</Option>
+                    <Select defaultValue='Excel或CSV数据文件上传'  style={{ width: 200 }} onChange={this.MethodChange}>                       
                         <Option key={2} value={2}>Excel或CSV数据文件上传</Option>
+                        <Option key={1} value={1}>填写数据上传</Option>
                     </Select>
                 </Timeline.Item>
                 <Timeline.Item>

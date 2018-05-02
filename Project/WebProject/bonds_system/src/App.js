@@ -15,6 +15,7 @@ import VaRCalculator from './Components/VaRCalculator';
 import Admin from './Components/Admin';
 import PCA from './Components/PCA';
 import Search from './Components/Search';
+import CustomYieldCurve from './Components/CustomYieldCurve';
 
 const { Header, Content, Sider } = Layout;
 
@@ -47,6 +48,7 @@ class App extends Component {
 								<Route exact path='/PCA' component={PCA} />
 								<Route exact path='/Admin' component={Admin} />
 								<Route exact path='/Search' component={Search} />
+								<Route exact path='/CurveFit' component={CustomYieldCurve} />
 							</Content>
 						</Layout>
 					</Layout>

@@ -194,6 +194,7 @@ class AmericaBonds extends React.Component {
 	}
 	render() {
 		return <div>
+			<h2>美国国债日收益率历史数据</h2>
 			<div style={{margin:'0px 0px 10px 0px'}}>
 				<Select defaultValue='2018'  style={{ width: 120 }} onChange={this.handleChange}>
 					{
@@ -224,7 +225,7 @@ class AmericaBonds extends React.Component {
 				closable = {true}
 				footer = {null}
 				>
-				<YieldCurve type='1' latestDate={this.state.data[0].Date}/>
+				<YieldCurve type='2' latestDate={this.state.data[0].Date}/>
 			</Modal>
 		</div>
 	}

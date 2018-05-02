@@ -178,6 +178,7 @@ class LIBOR extends React.Component {
 	}
 	render() {
 		return <div>
+			<h2>LIBOR日收益率历史数据</h2>
 			<div style={{margin:'0px 0px 10px 0px'}}>
 				<Select defaultValue='2013'  style={{ width: 120 }} onChange={this.handleChange}>
 					{

@@ -189,6 +189,7 @@ class DetailData extends React.Component {
 	}
 	render() {
 		return <div>
+			<h2>最新债券数据</h2>
 			<div style={{margin:'0px 0px 10px 0px'}}>
 				<Select defaultValue='GZ'  style={{ width: 120 }} onChange={this.handleChange}>
                     <Option key='GZ' value='GZ'>国债数据</Option>

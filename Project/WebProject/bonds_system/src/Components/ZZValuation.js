@@ -116,6 +116,7 @@ class ZZValuation extends React.Component {
     }
     render() {
         return <div>
+            <h2>中债估值数据</h2>
             <span>数据来源：<a target='about_blank' href='http://yield.chinabond.com.cn/cbweb-mn/val/val_query_list?locale=zh_CN'>中债估值</a></span>
             {
                 this.state.loading ? null : <Table columns={this.state.columns} dataSource={this.state.data} />

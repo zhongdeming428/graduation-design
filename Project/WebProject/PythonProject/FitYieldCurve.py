@@ -10,8 +10,8 @@ import pandas as pd
 seterr(over='ignore')
 Type = sys.argv[1]
 Date = sys.argv[2]
-# Type = '1'
-# Date = '2016/01/04'
+# Type = '2'
+# Date = '2018/04/30'
 Dic = {
     '1': 'ChinaBonds',
     '2': 'AmericaBonds'
