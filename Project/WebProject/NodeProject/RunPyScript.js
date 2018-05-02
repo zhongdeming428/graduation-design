@@ -87,9 +87,9 @@ var calculatePCA = function(type, data, file, componentCount, res) {
                 if(i < ratesRows.length - 1) {
                     row = row.split(',');
                     var obj = {};
-                    obj['eigenVals'] = parseFloat(row[0]).toFixed(2);
-                    obj['rate'] = parseFloat(row[1]).toFixed(2);
-                    obj['culmulativeRate'] = parseFloat(row[2]).toFixed(4);
+                    obj['eigenVals'] = parseFloat(row[0]);
+                    obj['rate'] = parseFloat(row[1]);
+                    obj['culmulativeRate'] = parseFloat(row[2]);
                     rates.push(obj);
                 }
             });
@@ -101,7 +101,7 @@ var calculatePCA = function(type, data, file, componentCount, res) {
                     (function(row) {
                         var data = [];
                         row.forEach((r, i) => {
-                            data.push(parseFloat(r).toFixed(2));
+                            data.push(parseFloat(r));
                         });
                         loadings.push(data);
                     })(row);
@@ -111,6 +111,14 @@ var calculatePCA = function(type, data, file, componentCount, res) {
                 rates, 
                 loadings
             };
+            fs.readdirSync('F:\\graduation-design\\Project\\WebProject\\NodeProject\\data').forEach(function (file, index) {
+                var curPath = 'F:\\graduation-design\\Project\\WebProject\\NodeProject\\data' + "\\" + file;
+                if (fs.lstatSync(curPath).isDirectory()) { // recurse
+                    deleteFolderRecursive(curPath);
+                } else { // delete file
+                    fs.unlinkSync(curPath);
+                }
+            });
             res.send(obj);
         }
     });

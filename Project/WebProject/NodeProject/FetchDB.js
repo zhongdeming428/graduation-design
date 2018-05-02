@@ -17,7 +17,11 @@ var getNewsData = function(url, res) {
             if(err)
                 res.status(500).send(err)
             console.log('获取新闻公告数据成功！');
-            res.status(200).send(result)
+            res.status(200).send(result.sort((a, b) => {
+                a = '2018年' + a.Time;
+                b = '2018年' + b.Time;
+                return new Date(b) - new Date(a)
+            }))
         });
         dbo.close();
     });

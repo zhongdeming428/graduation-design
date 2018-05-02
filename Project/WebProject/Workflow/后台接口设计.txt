@@ -8,3 +8,4 @@
 （8）“/CalculateVaR”：POST方法，参数为type（数据上传方式：1为字符串手写数据，2为excel或者csv数据），data（手写字符串数据），file（上传文件的文件名），confidenceLevel（置信区间），holdingPeriod（持有期），simCount（模拟次数）。
 （9）“/Admin”：POST方法，验证账号密码登录，参数为userName， password和remember。返回值为-1账户不存在，0密码错误，1登录成功。
 （10）“/CalculatePCA”：POST方法，计算PCA 主成分的接口，接受参数为type（数据上传方式：1为字符串手写数据，2为csv数据），data为手写字符串数据，file为上传csv文件的文件名，componentCount为想要提取主成分的个数。
+（11）“/Search”：POST方法，根据条件搜索数据，参数为code代码，name简称，分类class，class值可为0全部、1国债、2沪企债、3深企债、4中债VaR、5中债估值。
