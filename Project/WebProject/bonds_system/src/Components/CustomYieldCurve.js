@@ -11,6 +11,10 @@ const addData = function() {
         message.warn('不能有数据为空！');
         return false;
     }
+    if(String(maturity).indexOf('.') != -1) {
+        message.warn('到期期限请不要填写小数！');
+        return false;
+    }
     for(let i = 0; i < this.state.data.length; i++) {   
         if(maturity == this.state.data[i].maturity) {
             message.warn('到期期限不能重复！');
