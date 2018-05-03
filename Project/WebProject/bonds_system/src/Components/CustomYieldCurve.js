@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import { Button, InputNumber, Icon, message } from 'antd';
+import Highcharts from 'highcharts';
+import Exporting from 'highcharts/modules/exporting';
+Exporting(Highcharts);
 
 const addData = function() {
     let { maturity, yieldRate } = this.state;
@@ -38,6 +41,23 @@ const startFit = function() {
         message.warn('请至少填写5条数据！');
         return false;
     }
+    axios.post('/YieldCurve', {
+        data: this.state.data
+    }).then(res => {
+        let data = res.data;
+        data.sort((a, b) => {
+            return parseFloat(a.year) - parseFloat(b.year);
+        });
+        let x = data.map(d => {
+            return parseFloat(d.year);
+        });
+        let y = data.map(d => {
+            return parseFloat(d.yield);
+        });
+        this.state.chart.update({xAxis: {categories: x}, series:[{data: y}]});
+    }, err => {
+        message.warn(err.message);
+    });
 };
 
 class CustomYieldCurve extends React.Component {
@@ -46,11 +66,64 @@ class CustomYieldCurve extends React.Component {
         this.state = {
             data: [],
             maturity: 0,
-            yieldRate: 0.0
+            yieldRate: 0.0,
+            chart: null
         };
         this.addData = addData.bind(this);
         this.deleteData = deleteData.bind(this);
         this.startFit = startFit.bind(this);
+    }
+    componentDidMount() {
+        Highcharts.setOptions({
+            lang: {
+                printChart: "打印图表",
+                downloadJPEG: "下载JPEG 图片",
+                downloadPDF: "下载PDF文档",
+                downloadPNG: "下载PNG 图片",
+                downloadSVG: "下载SVG 矢量图",
+                exportButtonTitle: "导出图片",
+                downloadCSV: "下载CSV格式文件",
+                downloadXLS: "下载XLS格式文件"
+            }
+        });
+        let chart = Highcharts.chart('custom-yield-curve', {
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: '收益率曲线'
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+                title: {
+                    text: '收益率'
+                }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 2,
+                        lineColor: '#06c',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [{
+                data: []
+            }]
+        });
+        // document.getElementsByClassName('highcharts-container')[0].style.width = '947px';
+        // document.getElementsByClassName('highcharts-root')[0].style.width = '100%';
+        this.setState({chart});
     }
     render() {
         return <div>
@@ -85,6 +158,10 @@ class CustomYieldCurve extends React.Component {
                     </tr>
                 </tbody>
             </table>
+            <h2 style={{marginTop: '20px'}}>收益率曲线</h2>
+            <div id='custom-yield-curve' style={{width: '947px', minHeight: '400px', margin: '50px 5%', height: '400px'}}>
+                
+            </div>
         </div>
     }
 }

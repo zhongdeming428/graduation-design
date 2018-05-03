@@ -2,7 +2,7 @@
 （2）“/BondsData”：POST方法，参数为数据类型（中债、美债、LIBOR、SHIBOR等）、数据年份（按年显示，如空则显示最新的数据年份），返回指定年份的所有数据以及所有年份。
 （3）“/Download”：GET方法，通过url传递type与year参数，返回excel数据。
 （4）“/DetailData”: GET方法，通过url传递type（SH/SZ/GZ）来选择数据。
-（5）“/YieldCurve”：GET方法，通过url传递date与type参数，返回拟合的收益率曲线数据。
+（5）“/YieldCurve”：GET方法，通过url传递date与type参数，返回拟合的收益率曲线数据。POST方法传递json数据，返回拟合后的数据。
 （6）“/ZZValuation”：GET方法，返回所有中债估值数据，按时间降序排列。
 （7）“/ZZVaR”：GET方法，返回所有中债VaR数据，按时间降序排列。
 （8）“/CalculateVaR”：POST方法，参数为type（数据上传方式：1为字符串手写数据，2为excel或者csv数据），data（手写字符串数据），file（上传文件的文件名），confidenceLevel（置信区间），holdingPeriod（持有期），simCount（模拟次数）。

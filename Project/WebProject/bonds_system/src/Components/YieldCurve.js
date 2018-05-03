@@ -2,7 +2,9 @@ import React from 'react';
 import { DatePicker, Modal, Button } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
-import Highcharts from 'highcharts/highstock';
+import Highcharts from 'highcharts';
+import Exporting from 'highcharts/modules/exporting';
+Exporting(Highcharts);
 
 const dateChange = function(date, dateStr) {
     this.setState({
@@ -50,6 +52,18 @@ class YieldCurve extends React.Component {
         this.generateYieldCurve = generateYieldCurve.bind(this);
     }
     componentDidMount() {
+        Highcharts.setOptions({
+            lang: {
+                printChart: "打印图表",
+                downloadJPEG: "下载JPEG 图片",
+                downloadPDF: "下载PDF文档",
+                downloadPNG: "下载PNG 图片",
+                downloadSVG: "下载SVG 矢量图",
+                exportButtonTitle: "导出图片",
+                downloadCSV: "下载CSV格式文件",
+                downloadXLS: "下载XLS格式文件"
+            }
+        });
         let chart = Highcharts.chart('yield-curve', {
             chart: {
                 type: 'spline'

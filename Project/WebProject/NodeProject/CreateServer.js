@@ -16,6 +16,7 @@ var calculateVaR = require('./RunPyScript').calculateVaR;
 var fitYieldCurve = require('./RunPyScript').fitYieldCurve;
 var refreshAll = require('./RunPyScript').refreshAll;
 var calculatePCA = require('./RunPyScript').calculatePCA;
+var customYieldCurve = require('./RunPyScript').customYieldCurve;
 
 var url = "mongodb://localhost:27017";
 
@@ -144,6 +145,11 @@ app.post('/Search', function(req, res) {
     var name = req.body.name;
     var type = req.body.type;
     searchData(url, code, name, type, res)
+});
+
+app.post('/YieldCurve', function(req, res) {
+    var data = req.body.data;
+    customYieldCurve(data, res);
 });
 
 app.listen(8000);

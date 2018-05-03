@@ -124,10 +124,43 @@ var calculatePCA = function(type, data, file, componentCount, res) {
     });
 };
 
+var customYieldCurve = function(data, res) {
+    // console.log(data);
+    var x = [];
+    var y = [];
+    data.forEach(d => {
+        x.push(d.maturity);
+        y.push(d.yieldRate);
+    });
+    pyShell.run('F:\\graduation-design\\Project\\WebProject\\PythonProject\\CustomYieldCurve.py', {
+        args: [JSON.stringify(x), JSON.stringify(y)]
+    }, function(err, result) {
+        if(err)
+            res.status(500).send(err);
+        else {
+            result = result.filter(r => {
+                return /Y\d+(\.\d+)?:\d+(\.\d+)?\r/g.test(String(r));
+            });
+            result = result.map(r => {
+                return r.replace(/\r|Y/g, '');
+            });
+            var data = [];
+            result.forEach(r => {
+                data.push({year: r.split(':')[0], yield: r.split(':')[1]});
+            });
+            // console.log(data);
+            res.send(data);
+            res.end();
+        }
+    });
+};
+
 // fitYieldCurve('2', '2006/01/13')
 // calculateVaR(1, '1,2,3', '', 0.95, 1, 1000)
 // calculatePCA(2, '', 'SHIBOR数据.csv', 3, null);
+// customYieldCurve([{maturity: 1, yieldRate: 1}]);
 exports.calculateVaR = calculateVaR;
 exports.fitYieldCurve = fitYieldCurve;
 exports.refreshAll = refreshAll;
 exports.calculatePCA = calculatePCA;
+exports.customYieldCurve = customYieldCurve;
