@@ -36,7 +36,7 @@ const generateYieldCurve = function(Type, Date) {
         });
         this.state.chart.update({xAxis: {categories: x}, series:[{data: y}]});
     }, err => {
-        warning('Error!', err);
+        warning('Error!', err.message);
     });
 };
 

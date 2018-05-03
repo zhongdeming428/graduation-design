@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Spin } from 'antd';
+import { List, Spin, message } from 'antd';
 import axios from 'axios';
 
 class News extends React.Component {
@@ -17,7 +17,8 @@ class News extends React.Component {
                 loading: false
             });
         }, err => {
-            console.log(err)
+            message.error(err.message);
+            this.setState({loading: false});
         })
     }
     render() {

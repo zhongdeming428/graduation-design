@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Select, Spin, Modal, Button } from 'antd';
+import { Table, Select, Spin, Modal, Button, message } from 'antd';
 import axios from 'axios';
 import YieldCurve from './YieldCurve';
 
@@ -107,7 +107,7 @@ const handleChange = function(value) {
         this.setState({
             loading: false
         });
-        alert(err);
+    	message.error(err.message);
     });
 }
 
@@ -189,7 +189,7 @@ class AmericaBonds extends React.Component {
 			this.setState({
 				loading: false
 			});
-			alert(err);
+			message.error(err.message);
 		});
 	}
 	render() {

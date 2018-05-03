@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Select, Spin, Modal, Button } from 'antd';
+import { Table, Select, Spin, Modal, Button, message } from 'antd';
 import axios from 'axios';
 const Option = Select.Option;
 
@@ -105,7 +105,7 @@ const handleChange = function(value) {
         this.setState({
             loading: false
         });
-        alert(err);
+        message.error(err.message);
     });
 }
 
@@ -173,7 +173,7 @@ class LIBOR extends React.Component {
 			this.setState({
 				loading: false
 			});
-			alert(err);
+			message.error(err.message);
 		});
 	}
 	render() {
