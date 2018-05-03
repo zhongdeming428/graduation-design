@@ -1,7 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var upload = require('jquery-file-upload-middleware');
-var cookieParser = require('cookie-parser')
+var cookieParser = require('cookie-parser');
+var path = require('path');
 
 var getNewsData = require('./FetchDB').getNewsData;
 var getBondsData = require('./FetchDB').getBondsData;
@@ -21,6 +22,7 @@ var customYieldCurve = require('./RunPyScript').customYieldCurve;
 var url = "mongodb://localhost:27017";
 
 app = express();
+app.use(express.static(path.join(__dirname, 'BondsSystem')));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use('/Upload', upload.fileHandler());
@@ -39,6 +41,11 @@ upload.configure({
 //https://github.com/aguidrevitch/jquery-file-upload-middleware/issues/61
 upload.on("begin", function (fileInfo) {
     fileInfo.name = fileInfo.originalName;
+});
+
+
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'BondsSystem', 'index.html'));
 });
 
 app.get('/News', function(req, res) {
